@@ -1,0 +1,37 @@
+.dropdown {
+  position: relative;
+
+  &__menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 180px;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    z-index: 100;
+  }
+
+  &__item {
+    display: block;
+    width: 100%;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
+
+    &:hover {
+      background: #f5f5f5;
+    }
+
+    &--danger {
+      color: #e53e3e;
+
+      &:hover {
+        background: #fff5f5;
+      }
+    }
+  }
+}

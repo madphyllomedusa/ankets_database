@@ -1,17 +1,20 @@
-import Group from './Group'
+import { useEffect, useState } from 'react'
+import { groupApi } from '../../../entities/group'
+import type { Group } from '../../../entities/group'
+import GroupItem from './Group'
 import styles from './HomePage.module.scss'
 
-const groups = [
-  'Тестовая группа А',
-  'Тестовая группа Б',
-  'Тестовая группа В',
-]
-
 function HomePage() {
+  const [groups, setGroups] = useState<Group[]>([])
+
+  useEffect(() => {
+    groupApi.getAll().then(setGroups)
+  }, [])
+
   return (
     <div className={styles.page}>
       {groups.map((group) => (
-        <Group key={group} name={group} />
+        <GroupItem key={group.id} id={group.id} name={group.name} />
       ))}
     </div>
   )

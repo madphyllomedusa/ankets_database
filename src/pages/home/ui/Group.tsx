@@ -1,17 +1,32 @@
-import { useState } from 'react'
-import folderIcon from '../../../assets/folder.png'
+import { useEffect, useState } from 'react'
 import styles from './Group.module.scss'
+import { FolderItem, folderApi } from '../../../entities/folder'
+import type { Folder } from '../../../entities/folder'
 
-const folders = [
-  'Папка 1',
-  'Папка 2',
-  'Папка 3',
-  'Папка 4',
-  'Папка 5',
-]
+interface GroupProps {
+  id: number
+  name: string
+}
 
-function Group({ name }) {
+function Group({ id, name }: GroupProps) {
   const [isOpen, setIsOpen] = useState(true)
+  const [folders, setFolders] = useState<Folder[]>([])
+
+  useEffect(() => {
+    folderApi.getByGroup(id).then(setFolders)
+  }, [id])
+
+  function handleRename(folderId: number, newName: string) {
+    folderApi.rename(folderId, newName).then(updated =>
+      setFolders(prev => prev.map(f => f.id === folderId ? updated : f))
+    )
+  }
+
+  function handleDelete(folderId: number) {
+    folderApi.delete(folderId).then(() =>
+      setFolders(prev => prev.filter(f => f.id !== folderId))
+    )
+  }
 
   return (
     <div className={styles.group}>
@@ -22,8 +37,12 @@ function Group({ name }) {
       {isOpen && (
         <ul className={styles.group__list}>
           {folders.map((folder) => (
-            <li key={folder} className={styles.group__item}>
-              <img src={folderIcon} alt="folder_png" width={20} height={16} /> {folder}
+            <li key={folder.id}>
+              <FolderItem
+                name={folder.name}
+                onRename={(newName) => handleRename(folder.id, newName)}
+                onDelete={() => handleDelete(folder.id)}
+              />
             </li>
           ))}
         </ul>
