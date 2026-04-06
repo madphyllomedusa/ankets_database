@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import folderIcon from '../../../assets/folder.png'
 import editIcon from '../../../assets/edit.png'
-import { Dropdown } from '../../../shared/ui'
+import { Dropdown, Input } from '../../../shared/ui'
 import styles from './FolderItem.module.scss'
 
 interface FolderItemProps {
@@ -33,11 +33,10 @@ function FolderItem({ name, onRename, onDelete }: FolderItemProps) {
     <div className={styles.item}>
       <img src={folderIcon} alt="folder" width={50} height={35} />
       {isEditing ? (
-        <input
+        <Input
           ref={inputRef}
-          className={styles.input}
           value={value}
-          onChange={e => setValue(e.target.value)}
+          onChange={setValue}
           onBlur={handleConfirm}
           onKeyDown={e => e.key === 'Enter' && handleConfirm()}
         />

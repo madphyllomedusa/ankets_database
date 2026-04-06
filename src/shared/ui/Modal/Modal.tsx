@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import Button from '../Button/Button'
 import styles from './Modal.module.scss'
 
@@ -11,11 +12,20 @@ interface ModalProps {
 }
 
 function Modal({ isOpen, onClose, title, children, onConfirm, confirmLabel = 'Создать' }: ModalProps) {
+  const modalRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (isOpen) {
+      const input = modalRef.current?.querySelector<HTMLInputElement>('input')
+      input?.focus()
+    }
+  }, [isOpen])
+
   if (!isOpen) return null
 
   return (
     <div className={styles.backdrop} onClick={onClose}>
-      <div className={styles.modal} onClick={e => e.stopPropagation()}>
+      <div className={styles.modal} ref={modalRef} onClick={e => e.stopPropagation()}>
         {title && <h2 className={styles.title}>{title}</h2>}
         <div className={styles.body}>{children}</div>
         <div className={styles.footer}>
