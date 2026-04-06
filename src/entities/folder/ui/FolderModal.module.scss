@@ -1,0 +1,122 @@
+@use '../../../shared/styles/variables' as *;
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.modal {
+  background: #fff;
+  border-radius: 12px;
+  width: 80vw;
+  height: 75vh;
+  max-width: 1100px;
+  display: flex;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  border-right: 1px solid #ebebeb;
+  padding: 24px 12px;
+  overflow-y: auto;
+
+  &__group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 0 8px;
+    margin-bottom: 8px;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__item {
+    padding: 7px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    color: #333;
+    transition: background 0.1s;
+
+    &:hover {
+      background: #f0f0f0;
+    }
+
+    &--active {
+      background: #ebebeb;
+      font-weight: 500;
+    }
+  }
+}
+
+.content {
+  flex: 1;
+  padding: 24px 32px;
+  position: relative;
+  overflow-y: auto;
+}
+
+.close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: 18px;
+  color: #aaa;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 4px;
+
+  &:hover {
+    background: #f0f0f0;
+    color: #333;
+  }
+}
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  margin-bottom: 20px;
+
+  &__group {
+    color: $color-green;
+    font-weight: 500;
+  }
+
+  &__sep {
+    color: #ccc;
+  }
+
+  &__folder {
+    color: #333;
+    font-weight: 500;
+  }
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #222;
+}

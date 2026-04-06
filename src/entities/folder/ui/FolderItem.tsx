@@ -8,9 +8,11 @@ interface FolderItemProps {
   name: string
   onRename: (newName: string) => void
   onDelete: () => void
+  onOpen?: () => void
+  active?: boolean
 }
 
-function FolderItem({ name, onRename, onDelete }: FolderItemProps) {
+function FolderItem({ name, onRename, onDelete, onOpen, active }: FolderItemProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [value, setValue] = useState(name)
   useEffect(() => {
@@ -25,7 +27,7 @@ function FolderItem({ name, onRename, onDelete }: FolderItemProps) {
 
   return (
     <div className={styles.item}>
-      <img src={folderIcon} alt="folder" width={50} height={35} />
+      <img src={folderIcon} alt="folder" width={50} height={35} onClick={!isEditing ? onOpen : undefined} style={{ cursor: onOpen && !isEditing ? 'pointer' : 'default' }} />
       {isEditing ? (
         <Input
           autoFocus
@@ -35,7 +37,7 @@ function FolderItem({ name, onRename, onDelete }: FolderItemProps) {
           onKeyDown={e => e.key === 'Enter' && handleConfirm()}
         />
       ) : (
-        <span className={styles.name}>{value}</span>
+        <span className={styles.name} onClick={onOpen} style={{ cursor: onOpen ? 'pointer' : 'default' }}>{value}</span>
       )}
       <button className={styles.edit} onClick={() => setIsEditing(true)}>
         <img src={editIcon} alt="edit" width={16} height={16} />

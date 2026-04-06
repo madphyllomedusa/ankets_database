@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import styles from './Group.module.scss'
 import { FolderItem, folderApi } from '../../folder'
+import FolderModal from '../../folder/ui/FolderModal'
 import type { Folder } from '../../folder'
 
 interface GroupProps {
@@ -11,6 +12,7 @@ interface GroupProps {
 function Group({ id, name }: GroupProps) {
   const [isOpen, setIsOpen] = useState(true)
   const [folders, setFolders] = useState<Folder[]>([])
+  const [openFolder, setOpenFolder] = useState<Folder | null>(null)
 
   useEffect(() => {
     folderApi.getByGroup(id).then(setFolders)
@@ -42,10 +44,21 @@ function Group({ id, name }: GroupProps) {
                 name={folder.name}
                 onRename={(newName) => handleRename(folder.id, newName)}
                 onDelete={() => handleDelete(folder.id)}
+                onOpen={() => setOpenFolder(folder)}
               />
             </li>
           ))}
         </ul>
+      )}
+
+      {openFolder && (
+        <FolderModal
+          folder={openFolder}
+          groupName={name}
+          folders={folders}
+          onClose={() => setOpenFolder(null)}
+          onSelectFolder={setOpenFolder}
+        />
       )}
     </div>
   )

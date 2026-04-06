@@ -2,6 +2,9 @@ import api from '@shared/api/instance'
 import type { Folder } from '../model/types'
 
 export const folderApi = {
+  getById: (id: number) =>
+    api.get<Folder>(`/folders/${id}`).then(res => res.data),
+
   getByGroup: (groupId: number) =>
     api.get<Folder[]>('/folders', { params: { groupId } }).then(res => res.data),
 
