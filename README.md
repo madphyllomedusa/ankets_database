@@ -4,23 +4,21 @@
 
 ## Стек
 
-| Технология | Назначение |
-|---|---|
-| React 19 + TypeScript | UI |
-| Vite 8 | Сборка и dev-сервер |
-| React Router 7 | Маршрутизация |
-| SCSS Modules | Стили (вложенные классы, BEM) |
-| JSON Server | REST API для разработки |
+- React 19 + TypeScript
+- Vite 8
+- React Router 7
+- SCSS Modules
+- JSON Server
 
 ## Структура проекта
 
 ```
 src/
-├── app/          # Точка входа, глобальные стили, роутер
-├── pages/        # Страницы (FSD)
+├── app/          # Глобальный App, глобальные стили, роутер
+├── pages/        # Страницы
 │   └── home/     # Главная страница — список групп анкет
 └── assets/       # Шрифты, иконки
-db.json           # База данных JSON Server
+db.json           # JSON Server
 ```
 
 ## Запуск
@@ -39,13 +37,6 @@ npm run server
 ## API
 
 JSON Server на `http://localhost:3001`.
-
-| Метод | Эндпоинт | Описание |
-|---|---|---|
-| GET | `/ankety` | Список всех анкет |
-| POST | `/ankety` | Создать анкету |
-| PUT | `/ankety/:id` | Обновить анкету |
-| DELETE | `/ankety/:id` | Удалить анкету |
 
 ## Сборка
 
