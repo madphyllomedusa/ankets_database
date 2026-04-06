@@ -9,16 +9,33 @@
     position: relative;
   }
 
+  &__user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+
+    &:hover .header__avatar {
+      opacity: 0.85;
+    }
+  }
+
+  &__name {
+    font-size: 14px;
+    color: #333;
+    white-space: nowrap;
+  }
+
   &__avatar {
+    display: block;
     width: 36px;
     height: 36px;
     border-radius: 50%;
     background: linear-gradient(135deg, #a78bfa, #60a5fa);
-    cursor: pointer;
+    flex-shrink: 0;
     transition: opacity 0.15s;
-
-    &:hover {
-      opacity: 0.85;
-    }
   }
 }

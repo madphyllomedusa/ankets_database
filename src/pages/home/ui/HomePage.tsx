@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { groupApi, GroupItem } from '../../../entities/group'
-import type { Group } from '../../../entities/group'
-import { Button, Input, Modal } from '../../../shared/ui'
+import { groupApi, GroupItem } from '@entities/group'
+import type { Group } from '@entities/group'
+import { Button, Input, Modal } from '@shared/ui'
 import styles from './HomePage.module.scss'
 
 function HomePage() {

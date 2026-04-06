@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import folderIcon from '../../../assets/folder.png'
-import editIcon from '../../../assets/edit.png'
-import { Dropdown, Input } from '../../../shared/ui'
+import folderIcon from '@assets/folder.png'
+import editIcon from '@assets/edit.png'
+import { Dropdown, Input } from '@shared/ui'
 import styles from './FolderItem.module.scss'
 
 interface FolderItemProps {

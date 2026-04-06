@@ -2,13 +2,17 @@ import styles from './Button.module.scss'
 
 interface ButtonProps {
   label: string
-  onClick: () => void
+  onClick?: () => void
   variant?: 'default' | 'green'
 }
 
 function Button({ label, onClick, variant = 'default' }: ButtonProps) {
   return (
-    <button className={`${styles.button} ${styles[variant]}`} onClick={onClick}>
+    <button
+      type={onClick ? 'button' : 'submit'}
+      className={`${styles.button} ${styles[variant]}`}
+      onClick={onClick}
+    >
       {label}
     </button>
   )

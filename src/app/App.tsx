@@ -1,14 +1,37 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { HomePage } from '../pages/home'
-import { Header } from '../widgets/header'
+import { useEffect } from 'react'
+import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { HomePage } from '@pages/home'
+import { LoginPage } from '@pages/login'
+import { Header } from '@widgets/header'
+import ProtectedRoute from '@app/ProtectedRoute'
+import { setUser } from '@features/auth/authSlice'
+import type { User } from '@entities/auth/model/types'
 import './App.scss'
 
 function App() {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    const raw = localStorage.getItem('user')
+    if (raw) {
+      try {
+        dispatch(setUser(JSON.parse(raw) as User))
+      } catch {
+        localStorage.removeItem('user')
+      }
+    }
+  }, [dispatch])
+
   return (
     <BrowserRouter>
-      <Header />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route element={<ProtectedRoute />}>
+          <Route element={<><Header /><Outlet /></>}>
+            <Route path="/" element={<HomePage />} />
+          </Route>
+        </Route>
       </Routes>
     </BrowserRouter>
   )

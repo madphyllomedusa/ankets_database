@@ -1,4 +1,4 @@
-import api from '../../../shared/api/instance'
+import api from '@shared/api/instance'
 import type { Folder } from '../model/types'
 
 export const folderApi = {
