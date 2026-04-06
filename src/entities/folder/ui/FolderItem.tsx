@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import folderIcon from '../../../assets/folder.png'
 import editIcon from '../../../assets/edit.png'
 import { Dropdown, Input } from '../../../shared/ui'
@@ -13,15 +13,9 @@ interface FolderItemProps {
 function FolderItem({ name, onRename, onDelete }: FolderItemProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [value, setValue] = useState(name)
-  const inputRef = useRef<HTMLInputElement>(null)
-
   useEffect(() => {
     setValue(name)
   }, [name])
-
-  useEffect(() => {
-    if (isEditing) inputRef.current?.focus()
-  }, [isEditing])
 
   function handleConfirm() {
     setIsEditing(false)
@@ -34,7 +28,7 @@ function FolderItem({ name, onRename, onDelete }: FolderItemProps) {
       <img src={folderIcon} alt="folder" width={50} height={35} />
       {isEditing ? (
         <Input
-          ref={inputRef}
+          autoFocus
           value={value}
           onChange={setValue}
           onBlur={handleConfirm}

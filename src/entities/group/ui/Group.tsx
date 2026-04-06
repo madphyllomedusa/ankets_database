@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import styles from './Group.module.scss'
-import { FolderItem, folderApi } from '../../../entities/folder'
-import type { Folder } from '../../../entities/folder'
+import { FolderItem, folderApi } from '../../folder'
+import type { Folder } from '../../folder'
 
 interface GroupProps {
   id: number
