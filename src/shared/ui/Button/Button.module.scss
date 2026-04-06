@@ -1,14 +1,27 @@
+@use '../../styles/variables' as *;
+
 .button {
-  margin-top: 12px;
   padding: 8px 16px;
   border-radius: 6px;
   font-size: 14px;
   font-weight: 500;
-  color: #6b6b6b;
   transition: background 0.15s, color 0.15s;
+}
+
+.default {
+  color: $color-text-muted;
 
   &:hover {
-    background: #f0f0f0;
-    color: #222;
+    background: $color-bg-hover;
+    color: $color-text;
+  }
+}
+
+.green {
+  background: $color-green;
+  color: #fff;
+
+  &:hover {
+    background: $color-green-hover;
   }
 }
