@@ -1,16 +1,54 @@
-# React + Vite
+# Анкеты — База данных анкет
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Веб-приложение для хранения и управления анкетами. Построено на React + TypeScript + Vite с архитектурой FSD.
 
-Currently, two official plugins are available:
+## Стек
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+| Технология | Назначение |
+|---|---|
+| React 19 + TypeScript | UI |
+| Vite 8 | Сборка и dev-сервер |
+| React Router 7 | Маршрутизация |
+| SCSS Modules | Стили (вложенные классы, BEM) |
+| JSON Server | REST API для разработки |
 
-## React Compiler
+## Структура проекта
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```
+src/
+├── app/          # Точка входа, глобальные стили, роутер
+├── pages/        # Страницы (FSD)
+│   └── home/     # Главная страница — список групп анкет
+└── assets/       # Шрифты, иконки
+db.json           # База данных JSON Server
+```
 
-## Expanding the ESLint configuration
+## Запуск
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+# Установить зависимости
+npm install
+
+# Запустить dev-сервер
+npm run dev
+
+# Запустить JSON Server (порт 3001)
+npm run server
+```
+
+## API
+
+JSON Server на `http://localhost:3001`.
+
+| Метод | Эндпоинт | Описание |
+|---|---|---|
+| GET | `/ankety` | Список всех анкет |
+| POST | `/ankety` | Создать анкету |
+| PUT | `/ankety/:id` | Обновить анкету |
+| DELETE | `/ankety/:id` | Удалить анкету |
+
+## Сборка
+
+```bash
+npm run build
+```
