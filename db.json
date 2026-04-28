@@ -29,5 +29,26 @@
     { "id": "3", "folderId": 2, "name": "Треугольники" },
     { "id": "4", "folderId": 5, "name": "Цезарь и Рим" }
   ],
+  "anketFields": [
+    { "id": "1",  "anketId": 1, "order": 1, "type": "text",   "label": "ФИО ученика",          "options": null },
+    { "id": "2",  "anketId": 1, "order": 2, "type": "choice", "label": "Класс",                 "options": ["8А", "8Б", "9А", "9Б"] },
+    { "id": "3",  "anketId": 1, "order": 3, "type": "stars",  "label": "Сложность задания",     "options": null },
+    { "id": "4",  "anketId": 1, "order": 4, "type": "number", "label": "Кол-во решённых задач", "options": null },
+
+    { "id": "5",  "anketId": 2, "order": 1, "type": "text",   "label": "ФИО ученика",           "options": null },
+    { "id": "6",  "anketId": 2, "order": 2, "type": "number", "label": "Балл за контрольную",   "options": null },
+    { "id": "7",  "anketId": 2, "order": 3, "type": "stars",  "label": "Оцените урок",          "options": null },
+    { "id": "8",  "anketId": 2, "order": 4, "type": "choice", "label": "Нужна ли пересдача",    "options": ["Да", "Нет", "Не уверен"] },
+
+    { "id": "9",  "anketId": 3, "order": 1, "type": "text",   "label": "Имя",                   "options": null },
+    { "id": "10", "anketId": 3, "order": 2, "type": "choice", "label": "Тип треугольника",       "options": ["Равносторонний", "Равнобедренный", "Прямоугольный", "Разносторонний"] },
+    { "id": "11", "anketId": 3, "order": 3, "type": "number", "label": "Периметр (см)",          "options": null },
+    { "id": "12", "anketId": 3, "order": 4, "type": "stars",  "label": "Интерес к теме",         "options": null },
+
+    { "id": "13", "anketId": 4, "order": 1, "type": "text",   "label": "Имя",                   "options": null },
+    { "id": "14", "anketId": 4, "order": 2, "type": "choice", "label": "Период истории",         "options": ["Республика", "Ранняя империя", "Поздняя античность"] },
+    { "id": "15", "anketId": 4, "order": 3, "type": "stars",  "label": "Интерес к теме",        "options": null },
+    { "id": "16", "anketId": 4, "order": 4, "type": "text",   "label": "Что запомнилось больше всего", "options": null }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }
