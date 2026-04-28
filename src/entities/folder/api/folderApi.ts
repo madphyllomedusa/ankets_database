@@ -8,6 +8,9 @@ export const folderApi = {
   getByGroup: (groupId: number) =>
     api.get<Folder[]>('/folders', { params: { groupId } }).then(res => res.data),
 
+  create: (name: string, groupId: number) =>
+    api.post<Folder>('/folders', { name, groupId }).then(res => res.data),
+
   rename: (id: number, name: string) =>
     api.patch<Folder>(`/folders/${id}`, { name }).then(res => res.data),
 

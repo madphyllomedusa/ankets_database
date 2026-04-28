@@ -36,4 +36,22 @@
     column-gap: 48px;
   }
 
+  &__add {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 300;
+    color: #aaa;
+    text-align: left;
+
+    &:hover {
+      background: #f5f5f5;
+      color: #555;
+    }
+  }
+
 }
