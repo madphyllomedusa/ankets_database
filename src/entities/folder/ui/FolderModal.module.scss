@@ -119,4 +119,34 @@
   font-size: 22px;
   font-weight: 600;
   color: #222;
+  margin-bottom: 20px;
+}
+
+.ankets {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.anket {
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #ebebeb;
+  font-size: 15px;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.1s;
+
+  &:hover {
+    background: #f7f7f7;
+  }
+}
+
+.empty {
+  font-size: 14px;
+  color: #bbb;
+  margin-top: 8px;
 }

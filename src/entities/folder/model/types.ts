@@ -1,5 +1,5 @@
 export interface Folder {
-  id: number
+  id: string
   groupId: number
   name: string
 }

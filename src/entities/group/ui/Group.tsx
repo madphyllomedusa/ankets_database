@@ -6,7 +6,7 @@ import type { Folder } from '../../folder'
 import { Modal, Input } from '@shared/ui'
 
 interface GroupProps {
-  id: number
+  id: string
   name: string
 }
 
@@ -21,13 +21,13 @@ function Group({ id, name }: GroupProps) {
     folderApi.getByGroup(id).then(setFolders)
   }, [id])
 
-  function handleRename(folderId: number, newName: string) {
+  function handleRename(folderId: string, newName: string) {
     folderApi.rename(folderId, newName).then(updated =>
       setFolders(prev => prev.map(f => f.id === folderId ? updated : f))
     )
   }
 
-  function handleDelete(folderId: number) {
+  function handleDelete(folderId: string) {
     folderApi.delete(folderId).then(() =>
       setFolders(prev => prev.filter(f => f.id !== folderId))
     )
