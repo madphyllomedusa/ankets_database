@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styles from './FolderModal.module.scss'
 import folderIcon from '@assets/folder.png'
 import type { Folder } from '@entities/folder/model/types'
@@ -14,7 +15,12 @@ interface FolderModalProps {
 }
 
 function FolderModal({ folder, groupName, folders, onClose, onSelectFolder }: FolderModalProps) {
+  const navigate = useNavigate();
   const [ankets, setAnkets] = useState<Anket[]>([])
+  
+  const handleClick = (anketId: string) => {
+    navigate(`/anket/${anketId}`)
+  }
 
   useEffect(() => {
     anketApi.getByFolder(folder.id).then(setAnkets)
@@ -54,7 +60,7 @@ function FolderModal({ folder, groupName, folders, onClose, onSelectFolder }: Fo
           {ankets.length > 0 ? (
             <ul className={styles.ankets}>
               {ankets.map(anket => (
-                <li key={anket.id} className={styles.anket}>
+                <li key={anket.id} className={styles.anket} onClick={() => handleClick(anket.id)}>
                   {anket.name}
                 </li>
               ))}

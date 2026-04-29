@@ -1,0 +1,40 @@
+@use '../../styles/variables' as *;
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  color: $color-text;
+}
+
+.stars {
+  display: flex;
+  gap: 8px;
+}
+
+.star {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: none;
+  font-size: 24px;
+  color: #ddd;
+  cursor: pointer;
+  transition: color 0.15s;
+  padding: 0;
+  line-height: 1;
+
+  &:hover {
+    color: $color-primary;
+  }
+
+  &--active {
+    color: $color-primary;
+  }
+}

@@ -1,0 +1,27 @@
+@use '../../styles/variables' as *;
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  color: $color-text;
+}
+
+.input {
+  padding: 8px 12px;
+  border: 1px solid $color-border;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.15s;
+
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+  }
+}

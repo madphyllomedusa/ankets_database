@@ -1,0 +1,23 @@
+@use "../../../shared/styles/variables" as *;
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  background: $color-bg-hover;
+  transition: background 0.15s;
+
+  &:hover {
+    background: #e8e8e8;
+  }
+}
+
+.name {
+  flex: 1;
+  color: $color-text;
+}
