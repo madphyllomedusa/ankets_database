@@ -1,0 +1,74 @@
+@use '../../styles/variables' as *;
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  color: $color-text;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover .optionText {
+    color: $color-green;
+  }
+}
+
+.checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  border: 2px solid $color-border;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  position: relative;
+
+  &:checked {
+    background: $color-green;
+    border-color: $color-green;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 1px;
+      width: 6px;
+      height: 10px;
+      border: 2px solid white;
+      border-top: none;
+      border-left: none;
+      transform: rotate(45deg);
+    }
+  }
+
+  &:hover:not(:checked) {
+    border-color: $color-green;
+  }
+}
+
+.optionText {
+  font-size: 14px;
+  color: $color-text;
+  transition: color 0.15s;
+}

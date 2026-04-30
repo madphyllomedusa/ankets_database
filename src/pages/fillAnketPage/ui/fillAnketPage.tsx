@@ -3,14 +3,16 @@ import { useEffect, useState } from 'react'
 import { anketApi, Anket } from '@entities/anket'
 import { anketFieldApi } from '@entities/anketField'
 import type { AnketField } from '@entities/anketField/model/types'
-import { TextFieldInput, ChoiceFieldInput, StarsFieldInput } from '@shared/ui/FormFields'
+import { TextFieldInput, ChoiceFieldInput, StarsFieldInput, CheckboxFieldInput } from '@shared/ui/FormFields'
 import styles from './fillAnketPage.module.scss'
+
+type FormValue = string | number | string[]
 
 function FillAnketPage() {
   const { id } = useParams<{ id: string }>()
   const [anket, setAnket] = useState<Anket | null>(null)
   const [fields, setFields] = useState<AnketField[]>([])
-  const [formData, setFormData] = useState<Record<string, string | number>>({})
+  const [formData, setFormData] = useState<Record<string, FormValue>>({})
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -20,33 +22,27 @@ function FillAnketPage() {
       .then(([anketData, fieldsData]) => {
         setAnket(anketData)
         setFields(fieldsData)
-        const initialData: Record<string, string | number> = {}
+        const initialData: Record<string, FormValue> = {}
         fieldsData.forEach((field) => {
-          initialData[field.id] = field.type === 'stars' ? 0 : ''
+          if (field.type === 'stars') initialData[field.id] = 0
+          else if (field.type === 'checkbox') initialData[field.id] = []
+          else initialData[field.id] = ''
         })
         setFormData(initialData)
       })
       .finally(() => setLoading(false))
   }, [id])
 
-  function handleFieldChange(fieldId: string, value: string | number) {
-    setFormData((prev) => ({
-      ...prev,
-      [fieldId]: value,
-    }))
+  function handleFieldChange(fieldId: string, value: FormValue) {
+    setFormData(prev => ({ ...prev, [fieldId]: value }))
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
   }
 
-  if (loading) {
-    return <div className={styles.page}>Загрузка...</div>
-  }
-
-  if (!anket) {
-    return <div className={styles.page}>Анкета не найдена</div>
-  }
+  if (loading) return <div className={styles.page}>Загрузка...</div>
+  if (!anket) return <div className={styles.page}>Анкета не найдена</div>
 
   return (
     <div className={styles.page}>
@@ -88,6 +84,15 @@ function FillAnketPage() {
                 <StarsFieldInput
                   label={field.label}
                   value={formData[field.id] as number}
+                  onChange={(value) => handleFieldChange(field.id, value)}
+                />
+              )}
+
+              {field.type === 'checkbox' && field.options && (
+                <CheckboxFieldInput
+                  label={field.label}
+                  options={field.options}
+                  value={formData[field.id] as string[]}
                   onChange={(value) => handleFieldChange(field.id, value)}
                 />
               )}

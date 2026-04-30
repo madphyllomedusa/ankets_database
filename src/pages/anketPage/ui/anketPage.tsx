@@ -5,8 +5,9 @@ import { submissionApi, Submission } from '@entities/submission'
 import { useEffect, useState } from 'react'
 import styles from './anketPage.module.scss'
 
-function renderValue(value: string | number | undefined, type: string): string {
+function renderValue(value: string | number | string[] | undefined, type: string): string {
   if (value === undefined || value === null || value === '') return '—'
+  if (Array.isArray(value)) return value.length === 0 ? '—' : value.join(', ')
   if (type === 'stars') {
     const n = Number(value)
     return '★'.repeat(n) + '☆'.repeat(5 - n)

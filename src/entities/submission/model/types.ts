@@ -1,6 +1,6 @@
 export interface SubmissionAnswer {
   fieldId: string
-  value: string | number
+  value: string | number | string[]
 }
 
 export interface Submission {
