@@ -15,26 +15,27 @@
 
 .stars {
   display: flex;
-  gap: 8px;
+  gap: 2px;
 }
 
 .star {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border: none;
   background: none;
-  font-size: 24px;
+  font-size: 34px;
   color: #ddd;
   cursor: pointer;
-  transition: color 0.15s;
+  transition: color 0.15s, transform 0.1s;
   padding: 0;
   line-height: 1;
 
   &:hover {
-    color: $color-primary;
+    color: #f59e0b;
+    transform: scale(1.15);
   }
 
   &--active {
-    color: $color-primary;
+    color: #f59e0b;
   }
 }

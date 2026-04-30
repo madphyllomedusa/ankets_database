@@ -14,16 +14,27 @@
 }
 
 .select {
-  padding: 8px 12px;
+  padding: 9px 36px 9px 12px;
   border: 1px solid $color-border;
   border-radius: 6px;
   font-size: 14px;
-  background: white;
+  color: $color-text;
+  background-color: white;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  appearance: none;
+  -webkit-appearance: none;
   cursor: pointer;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s;
 
   &:focus {
     outline: none;
-    border-color: $color-primary;
+    border-color: $color-green;
+    box-shadow: 0 0 0 3px rgba(72, 187, 120, 0.15);
+  }
+
+  &:hover:not(:focus) {
+    border-color: #aaa;
   }
 }

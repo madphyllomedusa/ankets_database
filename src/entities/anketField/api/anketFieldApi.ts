@@ -5,5 +5,5 @@ export const anketFieldApi = {
   getByAnket: (anketId: string) =>
     api
       .get<AnketField[]>('/anketFields', { params: { anketId: Number(anketId) } })
-      .then(res => res.data.sort((a, b) => a.order - b.order)),
+      .then(res => res.data),
 }

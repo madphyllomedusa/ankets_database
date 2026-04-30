@@ -2,7 +2,8 @@
 
 .page {
   position: relative;
-  padding: 20px;
+  padding: 24px 28px;
+  min-height: 100vh;
 }
 
 .formButton {
@@ -23,6 +24,103 @@
     background-color: $color-green-hover;
   }
 }
+
+.anketTitle {
+  font-size: 22px;
+  font-weight: 700;
+  color: $color-text;
+  margin: 0 0 20px 0;
+  padding-right: 120px;
+}
+
+.empty {
+  color: $color-text-muted;
+  font-size: 14px;
+  margin-top: 40px;
+  text-align: center;
+}
+
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid #a3d9a5;
+  box-shadow: 0 2px 12px rgba(72, 187, 120, 0.1);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  color: $color-text;
+
+  thead tr {
+    background-color: #d4edda;
+  }
+
+  th {
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    color: #276749;
+    border-bottom: 2px solid #a3d9a5;
+    border-right: 1px solid #a3d9a5;
+    white-space: nowrap;
+
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  td {
+    padding: 11px 16px;
+    border-bottom: 1px solid #c6eac9;
+    border-right: 1px solid #c6eac9;
+    vertical-align: middle;
+
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  tbody tr {
+    transition: background 0.1s;
+
+    &:hover {
+      background-color: #c6eac9 !important;
+    }
+  }
+}
+
+.tdStars {
+  letter-spacing: 2px;
+  color: #f59e0b;
+  font-size: 15px;
+}
+
+.rowEven {
+  background-color: #ffffff;
+}
+
+.rowOdd {
+  background-color: #f0faf1;
+}
+
+.rowSelected {
+  background-color: #48bb78 !important;
+  color: #fff;
+
+  .tdStars {
+    color: #fef08a;
+  }
+}
+
+// modal
 
 .overlay {
   position: fixed;
@@ -72,10 +170,4 @@
   font-weight: 600;
   margin-bottom: 20px;
   color: $color-text;
-}
-
-.text {
-  color: $color-text-muted;
-  line-height: 1.5;
-  font-size: 14px;
 }
