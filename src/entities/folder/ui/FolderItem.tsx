@@ -26,25 +26,27 @@ function FolderItem({ name, onRename, onDelete, onOpen, active }: FolderItemProp
   }
 
   return (
-    <div className={styles.item}>
-      <img src={folderIcon} alt="folder" width={50} height={35} onClick={!isEditing ? onOpen : undefined} style={{ cursor: onOpen && !isEditing ? 'pointer' : 'default' }} />
+    <div className={styles.item} onClick={!isEditing ? onOpen : undefined}>
+      <img src={folderIcon} alt="folder" width={50} height={35} />
       {isEditing ? (
-        <Input
-          autoFocus
-          value={value}
-          onChange={setValue}
-          onBlur={handleConfirm}
-          onKeyDown={e => e.key === 'Enter' && handleConfirm()}
-        />
+        <div onClick={e => e.stopPropagation()} style={{ flex: 1 }}>
+          <Input
+            autoFocus
+            value={value}
+            onChange={setValue}
+            onBlur={handleConfirm}
+            onKeyDown={e => e.key === 'Enter' && handleConfirm()}
+          />
+        </div>
       ) : (
-        <span className={styles.name} onClick={onOpen} style={{ cursor: onOpen ? 'pointer' : 'default' }}>{value}</span>
+        <span className={styles.name}>{value}</span>
       )}
-      <button className={styles.edit} onClick={() => setIsEditing(true)}>
+      <button className={styles.edit} onClick={e => { e.stopPropagation(); setIsEditing(true) }}>
         <img src={editIcon} alt="edit" width={16} height={16} />
       </button>
       <Dropdown
         trigger={(toggle) => (
-          <button className={styles.dots} onClick={toggle}>⋮</button>
+          <button className={styles.dots} onClick={e => { e.stopPropagation(); toggle() }}>⋮</button>
         )}
         items={[{ label: 'Удалить', onClick: onDelete, danger: true }]}
       />
