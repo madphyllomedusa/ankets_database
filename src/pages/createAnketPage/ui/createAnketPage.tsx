@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { anketApi } from '@entities/anket'
 import { anketFieldApi } from '@entities/anketField'
 import type { FieldType } from '@entities/anketField'
+import { useToast } from '@shared/model/toastContext'
 import styles from './createAnketPage.module.scss'
 
 type DraftField = {
@@ -29,6 +30,7 @@ function CreateAnketPage() {
   const { folderId } = useParams<{ folderId: string }>()
   const navigate = useNavigate()
 
+  const { showToast } = useToast()
   const [name, setName] = useState('')
   const [fields, setFields] = useState<DraftField[]>([])
   const [saving, setSaving] = useState(false)
@@ -88,7 +90,10 @@ function CreateAnketPage() {
           )
         )
       )
+      showToast('Анкета успешно создана')
       navigate(`/anket/${anket.id}`)
+    } catch {
+      showToast('Не удалось создать анкету', 'error')
     } finally {
       setSaving(false)
     }

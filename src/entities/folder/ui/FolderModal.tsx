@@ -5,6 +5,7 @@ import folderIcon from '@assets/folder.png'
 import type { Folder } from '@entities/folder/model/types'
 import { anketApi } from '@entities/anket'
 import type { Anket } from '@entities/anket'
+import { useToast } from '@shared/model/toastContext'
 
 interface FolderModalProps {
   folder: Folder
@@ -15,7 +16,8 @@ interface FolderModalProps {
 }
 
 function FolderModal({ folder, groupName, folders, onClose, onSelectFolder }: FolderModalProps) {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const { showToast } = useToast()
   const [ankets, setAnkets] = useState<Anket[]>([])
   
   const handleClick = (anketId: string) => {
@@ -76,8 +78,13 @@ function FolderModal({ folder, groupName, folders, onClose, onSelectFolder }: Fo
                     className={styles.deleteAnketBtn}
                     onClick={async e => {
                       e.stopPropagation()
-                      await anketApi.delete(anket.id)
-                      setAnkets(prev => prev.filter(a => a.id !== anket.id))
+                      try {
+                        await anketApi.delete(anket.id)
+                        setAnkets(prev => prev.filter(a => a.id !== anket.id))
+                        showToast('Анкета удалена')
+                      } catch {
+                        showToast('Не удалось удалить анкету', 'error')
+                      }
                     }}
                     title="Удалить анкету"
                   >

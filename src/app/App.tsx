@@ -10,6 +10,8 @@ import { Header } from '@widgets/header'
 import ProtectedRoute from '@app/ProtectedRoute'
 import { setUser } from '@features/auth/authSlice'
 import type { User } from '@entities/auth/model/types'
+import { ToastProvider } from '@shared/model/toastContext'
+import { Toast } from '@shared/ui/Toast'
 import './App.scss'
 
 
@@ -28,19 +30,22 @@ function App() {
   }, [dispatch])
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route element={<ProtectedRoute />}>
-          <Route element={<><Header /><Outlet /></>}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/anket/:id" element={<AnketPage />} />
-            <Route path="/create-anket/:folderId" element={<CreateAnketPage />} />
+    <ToastProvider>
+      <Toast />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route element={<ProtectedRoute />}>
+            <Route element={<><Header /><Outlet /></>}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/anket/:id" element={<AnketPage />} />
+              <Route path="/create-anket/:folderId" element={<CreateAnketPage />} />
+            </Route>
+            <Route path="/fill-anket/:id" element={<FillAnketPage />} />
           </Route>
-          <Route path="/fill-anket/:id" element={<FillAnketPage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
+    </ToastProvider>
   )
 }
 

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import type { AnketField } from '@entities/anketField'
 import { submissionApi } from '../api/submissionApi'
 import type { Submission } from '../model/types'
+import { useToast } from '@shared/model/toastContext'
 import styles from './SubmissionsTable.module.scss'
 
 type EditingCell = {
@@ -28,6 +29,7 @@ function renderValue(value: string | number | string[] | undefined, type: string
 }
 
 function SubmissionsTable({ fields, submissions, onUpdate, onDelete }: Props) {
+  const { showToast } = useToast()
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [editing, setEditing] = useState<EditingCell | null>(null)
 
@@ -38,6 +40,9 @@ function SubmissionsTable({ fields, submissions, onUpdate, onDelete }: Props) {
   editingRef.current = editing
   submissionsRef.current = submissions
   onUpdateRef.current = onUpdate
+
+  const showToastRef = useRef(showToast)
+  showToastRef.current = showToast
 
   const save = useCallback(async (valueOverride?: string | number | string[]) => {
     const cell = editingRef.current
@@ -50,8 +55,13 @@ function SubmissionsTable({ fields, submissions, onUpdate, onDelete }: Props) {
     const newAnswers = sub.answers.some(a => a.fieldId === cell.fieldId)
       ? sub.answers.map(a => a.fieldId === cell.fieldId ? { ...a, value } : a)
       : [...sub.answers, { fieldId: cell.fieldId, value }]
-    const updated = await submissionApi.update(sub.id, newAnswers)
-    onUpdateRef.current(updated)
+    try {
+      const updated = await submissionApi.update(sub.id, newAnswers)
+      onUpdateRef.current(updated)
+      showToastRef.current('Ответ сохранён')
+    } catch {
+      showToastRef.current('Не удалось сохранить', 'error')
+    }
   }, [])
 
   useEffect(() => {
@@ -168,9 +178,14 @@ function SubmissionsTable({ fields, submissions, onUpdate, onDelete }: Props) {
 
   async function handleDelete() {
     if (!selectedId) return
-    await submissionApi.delete(selectedId)
-    onDelete(selectedId)
-    setSelectedId(null)
+    try {
+      await submissionApi.delete(selectedId)
+      onDelete(selectedId)
+      setSelectedId(null)
+      showToast('Запись удалена')
+    } catch {
+      showToast('Не удалось удалить', 'error')
+    }
   }
 
   return (

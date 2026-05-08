@@ -4,6 +4,7 @@ import { FolderItem, folderApi } from '../../folder'
 import FolderModal from '../../folder/ui/FolderModal'
 import type { Folder } from '../../folder'
 import { Modal, Input } from '@shared/ui'
+import { useToast } from '@shared/model/toastContext'
 
 interface GroupProps {
   id: string
@@ -11,6 +12,7 @@ interface GroupProps {
 }
 
 function Group({ id, name }: GroupProps) {
+  const { showToast } = useToast()
   const [isOpen, setIsOpen] = useState(true)
   const [folders, setFolders] = useState<Folder[]>([])
   const [openFolder, setOpenFolder] = useState<Folder | null>(null)
@@ -21,25 +23,37 @@ function Group({ id, name }: GroupProps) {
     folderApi.getByGroup(id).then(setFolders)
   }, [id])
 
-  function handleRename(folderId: string, newName: string) {
-    folderApi.rename(folderId, newName).then(updated =>
+  async function handleRename(folderId: string, newName: string) {
+    try {
+      const updated = await folderApi.rename(folderId, newName)
       setFolders(prev => prev.map(f => f.id === folderId ? updated : f))
-    )
+      showToast('Папка переименована')
+    } catch {
+      showToast('Не удалось переименовать папку', 'error')
+    }
   }
 
-  function handleDelete(folderId: string) {
-    folderApi.delete(folderId).then(() =>
+  async function handleDelete(folderId: string) {
+    try {
+      await folderApi.delete(folderId)
       setFolders(prev => prev.filter(f => f.id !== folderId))
-    )
+      showToast('Папка удалена')
+    } catch {
+      showToast('Не удалось удалить папку', 'error')
+    }
   }
 
-  function handleCreate() {
+  async function handleCreate() {
     if (!newFolderName.trim()) return
-    folderApi.create(newFolderName.trim(), id).then(created => {
+    try {
+      const created = await folderApi.create(newFolderName.trim(), id)
       setFolders(prev => [...prev, created])
       setNewFolderName('')
       setIsCreateOpen(false)
-    })
+      showToast('Папка создана')
+    } catch {
+      showToast('Не удалось создать папку', 'error')
+    }
   }
 
   return (

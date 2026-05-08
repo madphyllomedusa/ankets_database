@@ -35,7 +35,7 @@ function Dropdown({ trigger, items }: DropdownProps) {
             <button
               key={item.label}
               className={`${styles.dropdown__item} ${item.danger ? styles['dropdown__item--danger'] : ''}`}
-              onClick={() => { item.onClick(); setIsOpen(false) }}
+              onClick={e => { e.stopPropagation(); item.onClick(); setIsOpen(false) }}
             >
               {item.label}
             </button>

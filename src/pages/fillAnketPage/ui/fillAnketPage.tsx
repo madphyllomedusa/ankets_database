@@ -5,6 +5,7 @@ import { anketFieldApi } from '@entities/anketField'
 import type { AnketField } from '@entities/anketField/model/types'
 import { submissionApi } from '@entities/submission'
 import { TextFieldInput, ChoiceFieldInput, StarsFieldInput, CheckboxFieldInput } from '@shared/ui/FormFields'
+import { useToast } from '@shared/model/toastContext'
 import styles from './fillAnketPage.module.scss'
 
 type FormValue = string | number | string[]
@@ -18,6 +19,7 @@ function FillAnketPage() {
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const { showToast } = useToast()
 
   useEffect(() => {
     if (!id) return
@@ -76,6 +78,8 @@ function FillAnketPage() {
     try {
       await submissionApi.create(id, answers)
       setSubmitted(true)
+    } catch {
+      showToast('Не удалось отправить анкету', 'error')
     } finally {
       setSubmitting(false)
     }
