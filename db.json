@@ -14,44 +14,242 @@
     }
   ],
   "folders": [
-    { "id": "1", "groupId": 1, "name": "Алгебра" },
-    { "id": "2", "groupId": 1, "name": "Геометрия" },
-    { "id": "3", "groupId": 1, "name": "Теория вероятностей" },
-    { "id": "4", "groupId": 1, "name": "Математический анализ" },
-    { "id": "5", "groupId": 2, "name": "Древний Рим" },
-    { "id": "6", "groupId": 2, "name": "Средневековье" },
-    { "id": "7", "groupId": 2, "name": "Первая мировая война" },
-    { "id": "8", "groupId": 2, "name": "Холодная война" }
+    {
+      "id": "1",
+      "groupId": 1,
+      "name": "Алгебра"
+    },
+    {
+      "id": "2",
+      "groupId": 1,
+      "name": "Геометрия"
+    },
+    {
+      "id": "3",
+      "groupId": 1,
+      "name": "Теория вероятностей"
+    },
+    {
+      "id": "4",
+      "groupId": 1,
+      "name": "Математический анализ"
+    },
+    {
+      "id": "5",
+      "groupId": 2,
+      "name": "Древний Рим"
+    },
+    {
+      "id": "6",
+      "groupId": 2,
+      "name": "Средневековье"
+    },
+    {
+      "id": "7",
+      "groupId": 2,
+      "name": "Первая мировая война"
+    },
+    {
+      "id": "8",
+      "groupId": 2,
+      "name": "Холодная война"
+    }
   ],
   "ankets": [
-    { "id": "1", "folderId": 1, "name": "Контрольная №1" },
-    { "id": "2", "folderId": 1, "name": "Контрольная №2" },
-    { "id": "3", "folderId": 2, "name": "Треугольники" },
-    { "id": "4", "folderId": 5, "name": "Цезарь и Рим" }
+    {
+      "id": "1",
+      "folderId": 1,
+      "name": "Контрольная №1"
+    },
+    {
+      "id": "2",
+      "folderId": 1,
+      "name": "Контрольная №2"
+    },
+    {
+      "id": "3",
+      "folderId": 2,
+      "name": "Треугольники"
+    },
+    {
+      "id": "4",
+      "folderId": 5,
+      "name": "Цезарь и Рим"
+    }
   ],
   "anketFields": [
-    { "id": "1",  "anketId": 1, "order": 1, "type": "text",   "label": "ФИО ученика",          "options": null },
-    { "id": "2",  "anketId": 1, "order": 2, "type": "choice", "label": "Класс",                 "options": ["8А", "8Б", "9А", "9Б"] },
-    { "id": "3",  "anketId": 1, "order": 3, "type": "stars",  "label": "Сложность задания",     "options": null },
-    { "id": "4",  "anketId": 1, "order": 4, "type": "number", "label": "Кол-во решённых задач", "options": null },
-
-    { "id": "5",  "anketId": 2, "order": 1, "type": "text",   "label": "ФИО ученика",           "options": null },
-    { "id": "6",  "anketId": 2, "order": 2, "type": "number", "label": "Балл за контрольную",   "options": null },
-    { "id": "7",  "anketId": 2, "order": 3, "type": "stars",  "label": "Оцените урок",          "options": null },
-    { "id": "8",  "anketId": 2, "order": 4, "type": "choice", "label": "Нужна ли пересдача",    "options": ["Да", "Нет", "Не уверен"] },
-
-    { "id": "9",  "anketId": 3, "order": 1, "type": "text",   "label": "Имя",                   "options": null },
-    { "id": "10", "anketId": 3, "order": 2, "type": "choice", "label": "Тип треугольника",       "options": ["Равносторонний", "Равнобедренный", "Прямоугольный", "Разносторонний"] },
-    { "id": "11", "anketId": 3, "order": 3, "type": "number", "label": "Периметр (см)",          "options": null },
-    { "id": "12", "anketId": 3, "order": 4, "type": "stars",  "label": "Интерес к теме",         "options": null },
-
-    { "id": "13", "anketId": 4, "order": 1, "type": "text",   "label": "Имя",                   "options": null },
-    { "id": "14", "anketId": 4, "order": 2, "type": "choice", "label": "Период истории",         "options": ["Республика", "Ранняя империя", "Поздняя античность"] },
-    { "id": "15", "anketId": 4, "order": 3, "type": "stars",  "label": "Интерес к теме",        "options": null },
-    { "id": "16", "anketId": 4, "order": 4, "type": "text",     "label": "Что запомнилось больше всего",  "options": null },
-
-    { "id": "17", "anketId": 1, "order": 5, "type": "checkbox", "label": "Темы с трудностями",            "options": ["Уравнения", "Неравенства", "Функции", "Логарифмы"] },
-    { "id": "18", "anketId": 4, "order": 5, "type": "checkbox", "label": "Запомнившиеся события",         "options": ["Переход через Рубикон", "Убийство Цезаря", "Войны с Галлией", "Гражданская война"] }
+    {
+      "id": "1",
+      "anketId": 1,
+      "order": 1,
+      "type": "text",
+      "label": "ФИО ученика",
+      "options": null
+    },
+    {
+      "id": "2",
+      "anketId": 1,
+      "order": 2,
+      "type": "choice",
+      "label": "Класс",
+      "options": [
+        "8А",
+        "8Б",
+        "9А",
+        "9Б"
+      ]
+    },
+    {
+      "id": "3",
+      "anketId": 1,
+      "order": 3,
+      "type": "stars",
+      "label": "Сложность задания",
+      "options": null
+    },
+    {
+      "id": "4",
+      "anketId": 1,
+      "order": 4,
+      "type": "number",
+      "label": "Кол-во решённых задач",
+      "options": null
+    },
+    {
+      "id": "5",
+      "anketId": 2,
+      "order": 1,
+      "type": "text",
+      "label": "ФИО ученика",
+      "options": null
+    },
+    {
+      "id": "6",
+      "anketId": 2,
+      "order": 2,
+      "type": "number",
+      "label": "Балл за контрольную",
+      "options": null
+    },
+    {
+      "id": "7",
+      "anketId": 2,
+      "order": 3,
+      "type": "stars",
+      "label": "Оцените урок",
+      "options": null
+    },
+    {
+      "id": "8",
+      "anketId": 2,
+      "order": 4,
+      "type": "choice",
+      "label": "Нужна ли пересдача",
+      "options": [
+        "Да",
+        "Нет",
+        "Не уверен"
+      ]
+    },
+    {
+      "id": "9",
+      "anketId": 3,
+      "order": 1,
+      "type": "text",
+      "label": "Имя",
+      "options": null
+    },
+    {
+      "id": "10",
+      "anketId": 3,
+      "order": 2,
+      "type": "choice",
+      "label": "Тип треугольника",
+      "options": [
+        "Равносторонний",
+        "Равнобедренный",
+        "Прямоугольный",
+        "Разносторонний"
+      ]
+    },
+    {
+      "id": "11",
+      "anketId": 3,
+      "order": 3,
+      "type": "number",
+      "label": "Периметр (см)",
+      "options": null
+    },
+    {
+      "id": "12",
+      "anketId": 3,
+      "order": 4,
+      "type": "stars",
+      "label": "Интерес к теме",
+      "options": null
+    },
+    {
+      "id": "13",
+      "anketId": 4,
+      "order": 1,
+      "type": "text",
+      "label": "Имя",
+      "options": null
+    },
+    {
+      "id": "14",
+      "anketId": 4,
+      "order": 2,
+      "type": "choice",
+      "label": "Период истории",
+      "options": [
+        "Республика",
+        "Ранняя империя",
+        "Поздняя античность"
+      ]
+    },
+    {
+      "id": "15",
+      "anketId": 4,
+      "order": 3,
+      "type": "stars",
+      "label": "Интерес к теме",
+      "options": null
+    },
+    {
+      "id": "16",
+      "anketId": 4,
+      "order": 4,
+      "type": "text",
+      "label": "Что запомнилось больше всего",
+      "options": null
+    },
+    {
+      "id": "17",
+      "anketId": 1,
+      "order": 5,
+      "type": "checkbox",
+      "label": "Темы с трудностями",
+      "options": [
+        "Уравнения",
+        "Неравенства",
+        "Функции",
+        "Логарифмы"
+      ]
+    },
+    {
+      "id": "18",
+      "anketId": 4,
+      "order": 5,
+      "type": "checkbox",
+      "label": "Запомнившиеся события",
+      "options": [
+        "Переход через Рубикон",
+        "Убийство Цезаря",
+        "Войны с Галлией",
+        "Гражданская война"
+      ]
+    }
   ],
   "submissions": [
     {
@@ -59,11 +257,10 @@
       "anketId": 1,
       "submittedAt": "2026-04-10T09:15:00",
       "answers": [
-        { "fieldId": "1", "value": "Иванов Иван Иванович" },
-        { "fieldId": "2", "value": "9А" },
-        { "fieldId": "3", "value": 4 },
-        { "fieldId": "4", "value": 7 },
-        { "fieldId": "17", "value": ["Функции", "Логарифмы"] }
+        {
+          "fieldId": "1",
+          "value": "TEST"
+        }
       ]
     },
     {
@@ -71,11 +268,30 @@
       "anketId": 1,
       "submittedAt": "2026-04-10T09:22:00",
       "answers": [
-        { "fieldId": "1", "value": "Петрова Мария Сергеевна" },
-        { "fieldId": "2", "value": "8Б" },
-        { "fieldId": "3", "value": 2 },
-        { "fieldId": "4", "value": 3 },
-        { "fieldId": "17", "value": ["Уравнения", "Неравенства", "Функции"] }
+        {
+          "fieldId": "1",
+          "value": "Петрова Мария Сергеевна"
+        },
+        {
+          "fieldId": "2",
+          "value": "8Б"
+        },
+        {
+          "fieldId": "3",
+          "value": 2
+        },
+        {
+          "fieldId": "4",
+          "value": 3
+        },
+        {
+          "fieldId": "17",
+          "value": [
+            "Уравнения",
+            "Неравенства",
+            "Функции"
+          ]
+        }
       ]
     },
     {
@@ -83,11 +299,26 @@
       "anketId": 1,
       "submittedAt": "2026-04-10T09:40:00",
       "answers": [
-        { "fieldId": "1", "value": "Сидоров Алексей Дмитриевич" },
-        { "fieldId": "2", "value": "9Б" },
-        { "fieldId": "3", "value": 5 },
-        { "fieldId": "4", "value": 10 },
-        { "fieldId": "17", "value": [] }
+        {
+          "fieldId": "1",
+          "value": "Сидоров Алексей Дмитриевич"
+        },
+        {
+          "fieldId": "2",
+          "value": "9Б"
+        },
+        {
+          "fieldId": "3",
+          "value": 5
+        },
+        {
+          "fieldId": "4",
+          "value": 10
+        },
+        {
+          "fieldId": "17",
+          "value": []
+        }
       ]
     },
     {
@@ -95,10 +326,22 @@
       "anketId": 2,
       "submittedAt": "2026-04-15T10:05:00",
       "answers": [
-        { "fieldId": "5", "value": "Козлова Анна Павловна" },
-        { "fieldId": "6", "value": 85 },
-        { "fieldId": "7", "value": 5 },
-        { "fieldId": "8", "value": "Нет" }
+        {
+          "fieldId": "5",
+          "value": "Козлова Анна Павловна"
+        },
+        {
+          "fieldId": "6",
+          "value": 85
+        },
+        {
+          "fieldId": "7",
+          "value": 5
+        },
+        {
+          "fieldId": "8",
+          "value": "Нет"
+        }
       ]
     },
     {
@@ -106,10 +349,22 @@
       "anketId": 2,
       "submittedAt": "2026-04-15T10:18:00",
       "answers": [
-        { "fieldId": "5", "value": "Новиков Егор Викторович" },
-        { "fieldId": "6", "value": 47 },
-        { "fieldId": "7", "value": 3 },
-        { "fieldId": "8", "value": "Да" }
+        {
+          "fieldId": "5",
+          "value": "Новиков Егор Викторович"
+        },
+        {
+          "fieldId": "6",
+          "value": 47
+        },
+        {
+          "fieldId": "7",
+          "value": 3
+        },
+        {
+          "fieldId": "8",
+          "value": "Да"
+        }
       ]
     },
     {
@@ -117,10 +372,22 @@
       "anketId": 3,
       "submittedAt": "2026-04-20T11:00:00",
       "answers": [
-        { "fieldId": "9", "value": "Смирнова Ольга" },
-        { "fieldId": "10", "value": "Прямоугольный" },
-        { "fieldId": "11", "value": 24 },
-        { "fieldId": "12", "value": 4 }
+        {
+          "fieldId": "9",
+          "value": "Смирнова Ольга"
+        },
+        {
+          "fieldId": "10",
+          "value": "Прямоугольный"
+        },
+        {
+          "fieldId": "11",
+          "value": 24
+        },
+        {
+          "fieldId": "12",
+          "value": 4
+        }
       ]
     },
     {
@@ -128,10 +395,22 @@
       "anketId": 3,
       "submittedAt": "2026-04-20T11:12:00",
       "answers": [
-        { "fieldId": "9", "value": "Фёдоров Кирилл" },
-        { "fieldId": "10", "value": "Равносторонний" },
-        { "fieldId": "11", "value": 18 },
-        { "fieldId": "12", "value": 5 }
+        {
+          "fieldId": "9",
+          "value": "Фёдоров Кирилл"
+        },
+        {
+          "fieldId": "10",
+          "value": "Равносторонний"
+        },
+        {
+          "fieldId": "11",
+          "value": 18
+        },
+        {
+          "fieldId": "12",
+          "value": 5
+        }
       ]
     },
     {
@@ -139,11 +418,29 @@
       "anketId": 4,
       "submittedAt": "2026-04-25T14:30:00",
       "answers": [
-        { "fieldId": "13", "value": "Морозова Диана" },
-        { "fieldId": "14", "value": "Ранняя империя" },
-        { "fieldId": "15", "value": 5 },
-        { "fieldId": "16", "value": "Завоевания Юлия Цезаря и его гибель" },
-        { "fieldId": "18", "value": ["Убийство Цезаря", "Войны с Галлией"] }
+        {
+          "fieldId": "13",
+          "value": "Морозова Диана"
+        },
+        {
+          "fieldId": "14",
+          "value": "Ранняя империя"
+        },
+        {
+          "fieldId": "15",
+          "value": 5
+        },
+        {
+          "fieldId": "16",
+          "value": "Завоевания Юлия Цезаря и его гибель"
+        },
+        {
+          "fieldId": "18",
+          "value": [
+            "Убийство Цезаря",
+            "Войны с Галлией"
+          ]
+        }
       ]
     },
     {
@@ -151,11 +448,29 @@
       "anketId": 4,
       "submittedAt": "2026-04-25T14:45:00",
       "answers": [
-        { "fieldId": "13", "value": "Захаров Тимур" },
-        { "fieldId": "14", "value": "Республика" },
-        { "fieldId": "15", "value": 3 },
-        { "fieldId": "16", "value": "Сенат и борьба патрициев с плебеями" },
-        { "fieldId": "18", "value": ["Переход через Рубикон", "Гражданская война"] }
+        {
+          "fieldId": "13",
+          "value": "Захаров Тимур"
+        },
+        {
+          "fieldId": "14",
+          "value": "Республика"
+        },
+        {
+          "fieldId": "15",
+          "value": 3
+        },
+        {
+          "fieldId": "16",
+          "value": "Сенат и борьба патрициев с плебеями"
+        },
+        {
+          "fieldId": "18",
+          "value": [
+            "Переход через Рубикон",
+            "Гражданская война"
+          ]
+        }
       ]
     }
   ],

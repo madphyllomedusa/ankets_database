@@ -1,20 +1,9 @@
 import { useParams } from 'react-router-dom'
 import { anketApi, AnketItem, Anket } from '@entities/anket'
 import { anketFieldApi, AnketField } from '@entities/anketField'
-import { submissionApi, Submission } from '@entities/submission'
+import { submissionApi, Submission, SubmissionsTable } from '@entities/submission'
 import { useEffect, useState } from 'react'
 import styles from './anketPage.module.scss'
-
-function renderValue(value: string | number | string[] | undefined, type: string): string {
-  if (value === undefined || value === null || value === '') return '—'
-  if (Array.isArray(value)) return value.length === 0 ? '—' : value.join(', ')
-  if (type === 'stars') {
-    const n = Number(value)
-    return '★'.repeat(n) + '☆'.repeat(5 - n)
-  }
-  return String(value)
-}
-
 
 function AnketPage() {
   const { id } = useParams<{ id: string }>()
@@ -22,7 +11,6 @@ function AnketPage() {
   const [fields, setFields] = useState<AnketField[]>([])
   const [submissions, setSubmissions] = useState<Submission[]>([])
   const [openModal, setOpenModal] = useState(false)
-  const [selectedId, setSelectedId] = useState<string | null>(null)
 
   useEffect(() => {
     if (!id) return
@@ -42,39 +30,11 @@ function AnketPage() {
       {submissions.length === 0 ? (
         <p className={styles.empty}>Нет заполненных анкет</p>
       ) : (
-        <div className={styles.tableWrapper}>
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                {fields.map(f => (
-                  <th key={f.id}>{f.label}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {submissions.map((sub, i) => (
-                <tr
-                  key={sub.id}
-                  className={
-                    selectedId === sub.id
-                      ? styles.rowSelected
-                      : i % 2 === 0 ? styles.rowEven : styles.rowOdd
-                  }
-                  onClick={() => setSelectedId(prev => prev === sub.id ? null : sub.id)}
-                >
-                  {fields.map(f => {
-                    const answer = sub.answers.find(a => a.fieldId === f.id)
-                    return (
-                      <td key={f.id} className={f.type === 'stars' ? styles.tdStars : undefined}>
-                        {renderValue(answer?.value, f.type)}
-                      </td>
-                    )
-                  })}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <SubmissionsTable
+          fields={fields}
+          submissions={submissions}
+          onUpdate={updated => setSubmissions(prev => prev.map(s => s.id === updated.id ? updated : s))}
+        />
       )}
 
       {openModal && (
