@@ -55,13 +55,34 @@ function FolderModal({ folder, groupName, folders, onClose, onSelectFolder }: Fo
             <span className={styles.breadcrumbs__sep}>/</span>
             <span className={styles.breadcrumbs__folder}>{folder.name}</span>
           </nav>
-          <h2 className={styles.title}>{folder.name}</h2>
+          <div className={styles.titleRow}>
+            <h2 className={styles.title}>{folder.name}</h2>
+            <button
+              className={styles.createBtn}
+              onClick={() => navigate(`/create-anket/${folder.id}`)}
+            >
+              + Создать анкету
+            </button>
+          </div>
 
           {ankets.length > 0 ? (
             <ul className={styles.ankets}>
               {ankets.map(anket => (
-                <li key={anket.id} className={styles.anket} onClick={() => handleClick(anket.id)}>
-                  {anket.name}
+                <li key={anket.id} className={styles.anket}>
+                  <span className={styles.anketName} onClick={() => handleClick(anket.id)}>
+                    {anket.name}
+                  </span>
+                  <button
+                    className={styles.deleteAnketBtn}
+                    onClick={async e => {
+                      e.stopPropagation()
+                      await anketApi.delete(anket.id)
+                      setAnkets(prev => prev.filter(a => a.id !== anket.id))
+                    }}
+                    title="Удалить анкету"
+                  >
+                    ✕
+                  </button>
                 </li>
               ))}
             </ul>

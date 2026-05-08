@@ -1,0 +1,1 @@
+export { CreateAnketPage } from './ui'

@@ -5,6 +5,7 @@ import { HomePage } from '@pages/home'
 import { LoginPage } from '@pages/login'
 import { AnketPage } from '@pages/anketPage'
 import { FillAnketPage } from '@pages/fillAnketPage'
+import { CreateAnketPage } from '@pages/createAnketPage'
 import { Header } from '@widgets/header'
 import ProtectedRoute from '@app/ProtectedRoute'
 import { setUser } from '@features/auth/authSlice'
@@ -34,6 +35,7 @@ function App() {
           <Route element={<><Header /><Outlet /></>}>
             <Route path="/" element={<HomePage />} />
             <Route path="/anket/:id" element={<AnketPage />} />
+            <Route path="/create-anket/:folderId" element={<CreateAnketPage />} />
           </Route>
           <Route path="/fill-anket/:id" element={<FillAnketPage />} />
         </Route>

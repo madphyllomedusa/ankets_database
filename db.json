@@ -249,6 +249,30 @@
         "Войны с Галлией",
         "Гражданская война"
       ]
+    },
+    {
+      "anketId": null,
+      "order": 1,
+      "type": "stars",
+      "label": "рпопоп",
+      "options": null,
+      "id": "szltcx_j9BE"
+    },
+    {
+      "anketId": null,
+      "order": 2,
+      "type": "text",
+      "label": "ьлрол",
+      "options": null,
+      "id": "aly1aVHS2QM"
+    },
+    {
+      "anketId": null,
+      "order": 1,
+      "type": "number",
+      "label": "попоо",
+      "options": null,
+      "id": "gL5fTU2uCKI"
     }
   ],
   "submissions": [
