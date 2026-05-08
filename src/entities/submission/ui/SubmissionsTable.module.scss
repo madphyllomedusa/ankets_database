@@ -84,6 +84,30 @@
   }
 }
 
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px 12px;
+  border-bottom: 1px solid #a3d9a5;
+  background-color: #f0faf1;
+}
+
+.deleteBtn {
+  padding: 4px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 5px;
+  border: 1px solid #fc8181;
+  background: #fff5f5;
+  color: #c53030;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover {
+    background: #fed7d7;
+  }
+}
+
 // cell editors
 
 .cellInput {

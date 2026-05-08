@@ -16,4 +16,6 @@ export const submissionApi = {
       .then(res => res.data),
   update: (id: string, answers: SubmissionAnswer[]) =>
     api.patch<Submission>(`/submissions/${id}`, { answers }).then(res => res.data),
+  delete: (id: string) =>
+    api.delete(`/submissions/${id}`).then(res => res.data),
 }

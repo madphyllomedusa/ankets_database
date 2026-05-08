@@ -34,6 +34,7 @@ function AnketPage() {
           fields={fields}
           submissions={submissions}
           onUpdate={updated => setSubmissions(prev => prev.map(s => s.id === updated.id ? updated : s))}
+          onDelete={id => setSubmissions(prev => prev.filter(s => s.id !== id))}
         />
       )}
 

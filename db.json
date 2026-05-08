@@ -499,35 +499,6 @@
         }
       ],
       "id": "qKfxBEEkL9w"
-    },
-    {
-      "anketId": 4,
-      "submittedAt": "2026-05-08T11:45:15.678Z",
-      "answers": [
-        {
-          "fieldId": "13",
-          "value": "тест1"
-        },
-        {
-          "fieldId": "14",
-          "value": "Ранняя империя"
-        },
-        {
-          "fieldId": "15",
-          "value": 4
-        },
-        {
-          "fieldId": "16",
-          "value": "авпвапв"
-        },
-        {
-          "fieldId": "18",
-          "value": [
-            "Убийство Цезаря"
-          ]
-        }
-      ],
-      "id": "UQa6PBVEtwk"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

@@ -14,6 +14,7 @@ interface Props {
   fields: AnketField[]
   submissions: Submission[]
   onUpdate: (updated: Submission) => void
+  onDelete: (id: string) => void
 }
 
 function renderValue(value: string | number | string[] | undefined, type: string): string {
@@ -26,7 +27,7 @@ function renderValue(value: string | number | string[] | undefined, type: string
   return String(value)
 }
 
-function SubmissionsTable({ fields, submissions, onUpdate }: Props) {
+function SubmissionsTable({ fields, submissions, onUpdate, onDelete }: Props) {
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [editing, setEditing] = useState<EditingCell | null>(null)
 
@@ -165,8 +166,22 @@ function SubmissionsTable({ fields, submissions, onUpdate }: Props) {
     return null
   }
 
+  async function handleDelete() {
+    if (!selectedId) return
+    await submissionApi.delete(selectedId)
+    onDelete(selectedId)
+    setSelectedId(null)
+  }
+
   return (
     <div className={styles.tableWrapper}>
+      {selectedId && (
+        <div className={styles.toolbar}>
+          <button className={styles.deleteBtn} onClick={handleDelete}>
+            Удалить
+          </button>
+        </div>
+      )}
       <table className={styles.table}>
         <thead>
           <tr>
