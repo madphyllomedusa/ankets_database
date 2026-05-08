@@ -14,6 +14,7 @@ function StarsFieldInput({ label, value, onChange }: StarsFieldInputProps) {
         {[1, 2, 3, 4, 5].map((star) => (
           <button
             key={star}
+            type="button"
             className={`${styles.star} ${star <= value ? styles['star--active'] : ''}`}
             onClick={() => onChange(star)}
           >
