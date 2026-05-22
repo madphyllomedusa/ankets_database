@@ -1,13 +1,15 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { anketApi } from '@entities/anket'
 import { anketFieldApi } from '@entities/anketField'
 import type { FieldType } from '@entities/anketField'
 import { useToast } from '@shared/model/toastContext'
-import styles from './createAnketPage.module.scss'
+import { Loader } from '@shared/ui'
+import styles from './editAnketPage.module.scss'
 
 type DraftField = {
   localId: string
+  serverId?: string
   type: FieldType
   label: string
   options: string[]
@@ -23,24 +25,51 @@ const FIELD_TYPE_LABELS: Record<FieldType, string> = {
 
 let counter = 0
 function uid() {
-  return String(++counter)
+  return `new-${++counter}`
 }
 
-function CreateAnketPage() {
-  const { folderId } = useParams<{ folderId: string }>()
+function EditAnketPage() {
+  const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-
   const { showToast } = useToast()
+
+  const [loading, setLoading] = useState(true)
   const [name, setName] = useState('')
-  const [fields, setFields] = useState<DraftField[]>([])
-  const [saving, setSaving] = useState(false)
   const [nameError, setNameError] = useState(false)
+  const [fields, setFields] = useState<DraftField[]>([])
+  const [deletedIds, setDeletedIds] = useState<string[]>([])
+  const [saving, setSaving] = useState(false)
+
+  useEffect(() => {
+    if (!id) return
+    Promise.all([anketApi.getById(id), anketFieldApi.getByAnket(id)])
+      .then(([anket, serverFields]) => {
+        setName(anket.name)
+        setFields(
+          serverFields
+            .sort((a, b) => a.order - b.order)
+            .map(f => ({
+              localId: f.id,
+              serverId: f.id,
+              type: f.type,
+              label: f.label,
+              options: f.options ?? [],
+            }))
+        )
+      })
+      .catch(() => showToast('Не удалось загрузить анкету', 'error'))
+      .finally(() => setLoading(false))
+  }, [id])
 
   function addField() {
     setFields(prev => [...prev, { localId: uid(), type: 'text', label: '', options: [] }])
   }
 
   function removeField(localId: string) {
+    const field = fields.find(f => f.localId === localId)
+    if (field?.serverId) {
+      setDeletedIds(prev => [...prev, field.serverId!])
+    }
     setFields(prev => prev.filter(f => f.localId !== localId))
   }
 
@@ -71,40 +100,43 @@ function CreateAnketPage() {
   }
 
   async function handleSave() {
-    if (!folderId) return
+    if (!id) return
     if (!name.trim()) {
       setNameError(true)
       return
     }
     setSaving(true)
     try {
-      const anket = await anketApi.create(name.trim(), folderId)
+      await anketApi.update(id, name.trim())
+      await Promise.all(deletedIds.map(sid => anketFieldApi.delete(sid)))
       await Promise.all(
-        fields.map((f, i) =>
-          anketFieldApi.create(
-            anket.id,
-            i + 1,
-            f.type,
-            f.label || `Поле ${i + 1}`,
-            f.type === 'choice' || f.type === 'checkbox' ? f.options : null,
-          )
-        )
+        fields.map((f, i) => {
+          const order = i + 1
+          const label = f.label || `Поле ${i + 1}`
+          const options = f.type === 'choice' || f.type === 'checkbox' ? f.options : null
+          if (f.serverId) {
+            return anketFieldApi.update(f.serverId, { order, type: f.type, label, options })
+          }
+          return anketFieldApi.create(id, order, f.type, label, options)
+        })
       )
-      showToast('Анкета успешно создана')
-      navigate(`/anket/${anket.id}`)
+      showToast('Анкета обновлена')
+      navigate(`/anket/${id}`)
     } catch {
-      showToast('Не удалось создать анкету', 'error')
+      showToast('Не удалось сохранить изменения', 'error')
     } finally {
       setSaving(false)
     }
   }
+
+  if (loading) return <Loader fullPage />
 
   return (
     <div className={styles.page}>
       <div className={styles.container}>
         <div className={styles.pageHeader}>
           <button className={styles.backBtn} onClick={() => navigate(-1)} title="Назад">←</button>
-          <h1 className={styles.heading}>Новая анкета</h1>
+          <h1 className={styles.heading}>Редактировать анкету</h1>
         </div>
 
         <div className={styles.section}>
@@ -200,7 +232,7 @@ function CreateAnketPage() {
             Отмена
           </button>
           <button className={styles.saveBtn} onClick={handleSave} disabled={saving}>
-            {saving ? 'Сохранение...' : 'Создать анкету'}
+            {saving ? 'Сохранение...' : 'Сохранить'}
           </button>
         </div>
       </div>
@@ -208,4 +240,4 @@ function CreateAnketPage() {
   )
 }
 
-export default CreateAnketPage
+export default EditAnketPage

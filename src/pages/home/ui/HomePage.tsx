@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react'
 import { groupApi, GroupItem } from '@entities/group'
 import type { Group } from '@entities/group'
-import { Button, Input, Modal } from '@shared/ui'
+import { Button, Input, Modal, Loader } from '@shared/ui'
 import styles from './HomePage.module.scss'
 
 function HomePage() {
   const [groups, setGroups] = useState<Group[]>([])
+  const [loading, setLoading] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [newGroupName, setNewGroupName] = useState('')
 
   useEffect(() => {
-    groupApi.getAll().then(setGroups)
+    groupApi.getAll().then(setGroups).finally(() => setLoading(false))
   }, [])
 
   function handleCreate() {
@@ -21,6 +22,8 @@ function HomePage() {
       setIsModalOpen(false)
     })
   }
+
+  if (loading) return <Loader fullPage />
 
   return (
     <div className={styles.page}>

@@ -6,6 +6,7 @@
   border-radius: 10px;
   border: 1px solid #a3d9a5;
   box-shadow: 0 2px 12px rgba(72, 187, 120, 0.1);
+  -webkit-overflow-scrolling: touch;
 }
 
 .table {
@@ -19,7 +20,7 @@
   }
 
   th {
-    padding: 12px 16px;
+    padding: 0;
     text-align: left;
     font-weight: 600;
     font-size: 13px;
@@ -56,6 +57,95 @@
     }
   }
 }
+
+// column header
+
+.thContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 14px 8px;
+  min-width: 100px;
+}
+
+.thLabel {
+  display: block;
+}
+
+.typeChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #3d8b5b;
+  background: rgba(72, 187, 120, 0.12);
+  border: 1px solid rgba(72, 187, 120, 0.3);
+  border-radius: 4px;
+  padding: 2px 7px 2px 5px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  white-space: nowrap;
+
+  &:hover {
+    background: rgba(72, 187, 120, 0.22);
+    border-color: rgba(72, 187, 120, 0.55);
+  }
+}
+
+.typeChipIcon {
+  font-size: 12px;
+  line-height: 1;
+}
+
+.typeChipLabel {
+  font-size: 11px;
+}
+
+.typeDropdown {
+  position: fixed;
+  background: #fff;
+  border: 1px solid $color-border;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  z-index: 9999;
+  min-width: 160px;
+  overflow: hidden;
+}
+
+.typeOption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: $color-text;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.1s;
+
+  &:hover {
+    background: $color-bg-hover;
+  }
+}
+
+.typeOptionActive {
+  background: #f0faf4;
+  color: $color-green;
+  font-weight: 600;
+}
+
+.typeOptionIcon {
+  font-size: 14px;
+  width: 18px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+// row states
 
 .tdStars {
   letter-spacing: 2px;
@@ -155,6 +245,8 @@
   cursor: pointer;
   line-height: 1;
   transition: transform 0.1s;
+  background: none;
+  border: none;
 
   &:hover {
     transform: scale(1.2);
@@ -190,6 +282,7 @@
   background: #48bb78;
   color: #fff;
   cursor: pointer;
+  border: none;
 
   &:hover {
     background: #38a169;
@@ -203,8 +296,26 @@
   background: #f0f0f0;
   color: #555;
   cursor: pointer;
+  border: none;
 
   &:hover {
     background: #e0e0e0;
+  }
+}
+
+// responsive
+
+@media (max-width: 640px) {
+  .table {
+    font-size: 13px;
+
+    td {
+      padding: 8px 10px;
+    }
+  }
+
+  .thContent {
+    padding: 8px 10px 6px;
+    min-width: 80px;
   }
 }

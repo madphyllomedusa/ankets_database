@@ -11,6 +11,9 @@ export const anketApi = {
   create: (name: string, folderId: string) =>
     api.post<Anket>('/ankets', { name, folderId: Number(folderId) }).then(res => res.data),
 
+  update: (id: string, name: string) =>
+    api.patch<Anket>(`/ankets/${id}`, { name }).then(res => res.data),
+
   delete: (id: string) =>
     api.delete(`/ankets/${id}`).then(res => res.data),
 }

@@ -1,15 +1,96 @@
 @use "../../../shared/styles/variables" as *;
 
 .page {
-  position: relative;
   padding: 24px 28px;
   min-height: 100vh;
+
+  @media (max-width: 640px) {
+    padding: 16px 14px;
+  }
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+
+  @media (max-width: 480px) {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}
+
+.backBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  font-size: 18px;
+  line-height: 1;
+  background: none;
+  border: 1px solid $color-border;
+  border-radius: 7px;
+  color: $color-text-muted;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+
+  &:hover {
+    background: $color-bg-hover;
+    color: $color-text;
+    border-color: #ccc;
+  }
+}
+
+.anketTitle {
+  font-size: 22px;
+  font-weight: 700;
+  color: $color-text;
+  margin: 0;
+  flex: 1;
+
+  @media (max-width: 480px) {
+    font-size: 18px;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+
+  @media (max-width: 480px) {
+    width: 100%;
+  }
+}
+
+.editButton {
+  padding: 8px 16px;
+  cursor: pointer;
+  background-color: #fff;
+  color: $color-text-muted;
+  border: 1px solid $color-border;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: $color-bg-hover;
+    border-color: #ccc;
+    color: $color-text;
+  }
+
+  @media (max-width: 480px) {
+    flex: 1;
+  }
 }
 
 .formButton {
-  position: absolute;
-  top: 20px;
-  right: 20px;
   padding: 8px 16px;
   cursor: pointer;
   background-color: $color-green;
@@ -19,18 +100,15 @@
   font-weight: 500;
   font-size: 14px;
   transition: background 0.15s;
+  white-space: nowrap;
 
   &:hover {
     background-color: $color-green-hover;
   }
-}
 
-.anketTitle {
-  font-size: 22px;
-  font-weight: 700;
-  color: $color-text;
-  margin: 0 0 20px 0;
-  padding-right: 120px;
+  @media (max-width: 480px) {
+    flex: 1;
+  }
 }
 
 .empty {
@@ -48,6 +126,7 @@
   align-items: center;
   justify-content: center;
   z-index: 200;
+  padding: 16px;
 }
 
 .modal {
@@ -72,9 +151,7 @@
   padding: 4px 8px;
   border-radius: 4px;
   line-height: 1;
-  transition:
-    background 0.15s,
-    color 0.15s;
+  transition: background 0.15s, color 0.15s;
 
   &:hover {
     background: $color-bg-hover;

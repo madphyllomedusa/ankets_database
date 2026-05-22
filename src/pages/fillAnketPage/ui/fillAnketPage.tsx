@@ -6,6 +6,7 @@ import type { AnketField } from '@entities/anketField/model/types'
 import { submissionApi } from '@entities/submission'
 import { TextFieldInput, ChoiceFieldInput, StarsFieldInput, CheckboxFieldInput } from '@shared/ui/FormFields'
 import { useToast } from '@shared/model/toastContext'
+import { Loader } from '@shared/ui'
 import styles from './fillAnketPage.module.scss'
 
 type FormValue = string | number | string[]
@@ -85,7 +86,7 @@ function FillAnketPage() {
     }
   }
 
-  if (loading) return <div className={styles.page}>Загрузка...</div>
+  if (loading) return <Loader fullPage />
   if (!anket) return <div className={styles.page}>Анкета не найдена</div>
 
   if (submitted) {
