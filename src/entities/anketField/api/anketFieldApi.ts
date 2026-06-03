@@ -11,4 +11,10 @@ export const anketFieldApi = {
     api
       .post<AnketField>('/anketFields', { anketId, order, type, label, options })
       .then(res => res.data),
+
+  update: (id: string, patch: Partial<Pick<AnketField, 'type' | 'label' | 'options' | 'order'>>) =>
+    api.patch<AnketField>(`/anketFields/${id}`, patch).then(res => res.data),
+
+  delete: (id: string) =>
+    api.delete(`/anketFields/${id}`).then(res => res.data),
 }

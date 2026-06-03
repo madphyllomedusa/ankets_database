@@ -3,7 +3,7 @@ import styles from './Group.module.scss'
 import { FolderItem, folderApi } from '../../folder'
 import FolderModal from '../../folder/ui/FolderModal'
 import type { Folder } from '../../folder'
-import { Modal, Input } from '@shared/ui'
+import { Modal, Input, Loader } from '@shared/ui'
 import { useToast } from '@shared/model/toastContext'
 
 interface GroupProps {
@@ -15,12 +15,13 @@ function Group({ id, name }: GroupProps) {
   const { showToast } = useToast()
   const [isOpen, setIsOpen] = useState(true)
   const [folders, setFolders] = useState<Folder[]>([])
+  const [loadingFolders, setLoadingFolders] = useState(true)
   const [openFolder, setOpenFolder] = useState<Folder | null>(null)
   const [isCreateOpen, setIsCreateOpen] = useState(false)
   const [newFolderName, setNewFolderName] = useState('')
 
   useEffect(() => {
-    folderApi.getByGroup(id).then(setFolders)
+    folderApi.getByGroup(id).then(setFolders).finally(() => setLoadingFolders(false))
   }, [id])
 
   async function handleRename(folderId: string, newName: string) {
@@ -64,6 +65,7 @@ function Group({ id, name }: GroupProps) {
       </button>
 
       {isOpen && (
+        loadingFolders ? <Loader /> :
         <ul className={styles.group__list}>
           {folders.map((folder) => (
             <li key={folder.id}>

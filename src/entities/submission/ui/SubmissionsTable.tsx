@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import type { AnketField } from '@entities/anketField'
+import { createPortal } from 'react-dom'
+import type { AnketField, FieldType } from '@entities/anketField'
 import { submissionApi } from '../api/submissionApi'
 import type { Submission } from '../model/types'
 import { useToast } from '@shared/model/toastContext'
@@ -16,6 +17,23 @@ interface Props {
   submissions: Submission[]
   onUpdate: (updated: Submission) => void
   onDelete: (id: string) => void
+  onFieldUpdate?: (updated: AnketField) => void
+}
+
+const FIELD_TYPE_LABELS: Record<FieldType, string> = {
+  text: 'Текст',
+  number: 'Число',
+  stars: 'Звёзды',
+  choice: 'Один вариант',
+  checkbox: 'Несколько вариантов',
+}
+
+const FIELD_TYPE_ICONS: Record<FieldType, string> = {
+  text: 'T',
+  number: '#',
+  stars: '★',
+  choice: '◉',
+  checkbox: '☑',
 }
 
 function renderValue(value: string | number | string[] | undefined, type: string): string {
@@ -28,10 +46,11 @@ function renderValue(value: string | number | string[] | undefined, type: string
   return String(value)
 }
 
-function SubmissionsTable({ fields, submissions, onUpdate, onDelete }: Props) {
+function SubmissionsTable({ fields, submissions, onUpdate, onDelete, onFieldUpdate }: Props) {
   const { showToast } = useToast()
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [editing, setEditing] = useState<EditingCell | null>(null)
+  const [typeMenu, setTypeMenu] = useState<{ fieldId: string; top: number; left: number } | null>(null)
 
   const editingTdRef = useRef<HTMLTableCellElement | null>(null)
   const editingRef = useRef<EditingCell | null>(null)
@@ -73,6 +92,18 @@ function SubmissionsTable({ fields, submissions, onUpdate, onDelete }: Props) {
     document.addEventListener('mousedown', handleMouseDown)
     return () => document.removeEventListener('mousedown', handleMouseDown)
   }, [save])
+
+  useEffect(() => {
+    if (!typeMenu) return
+    function close(e: MouseEvent) {
+      const target = e.target as Element
+      if (!target.closest(`.${styles.typeDropdown}`) && !target.closest(`.${styles.typeChip}`)) {
+        setTypeMenu(null)
+      }
+    }
+    document.addEventListener('mousedown', close)
+    return () => document.removeEventListener('mousedown', close)
+  }, [typeMenu])
 
   function startEdit(sub: Submission, field: AnketField, e: React.MouseEvent) {
     e.stopPropagation()
@@ -200,7 +231,56 @@ function SubmissionsTable({ fields, submissions, onUpdate, onDelete }: Props) {
       <table className={styles.table}>
         <thead>
           <tr>
-            {fields.map(f => <th key={f.id}>{f.label}</th>)}
+            {fields.map(f => (
+              <th key={f.id}>
+                <div className={styles.thContent}>
+                  <span className={styles.thLabel}>{f.label}</span>
+                  {onFieldUpdate && (
+                    <button
+                      className={styles.typeChip}
+                      title="Изменить тип поля"
+                      onClick={e => {
+                        e.stopPropagation()
+                        if (typeMenu?.fieldId === f.id) {
+                          setTypeMenu(null)
+                        } else {
+                          const rect = e.currentTarget.getBoundingClientRect()
+                          setTypeMenu({ fieldId: f.id, top: rect.bottom + 4, left: rect.left })
+                        }
+                      }}
+                    >
+                      <span className={styles.typeChipIcon}>{FIELD_TYPE_ICONS[f.type]}</span>
+                      <span className={styles.typeChipLabel}>{FIELD_TYPE_LABELS[f.type]}</span>
+                    </button>
+                  )}
+                </div>
+              </th>
+            ))}
+            {typeMenu && onFieldUpdate && createPortal(
+              <div
+                className={styles.typeDropdown}
+                style={{ top: typeMenu.top, left: typeMenu.left }}
+              >
+                {(Object.keys(FIELD_TYPE_LABELS) as FieldType[]).map(t => {
+                  const field = fields.find(f => f.id === typeMenu.fieldId)!
+                  return (
+                    <button
+                      key={t}
+                      className={`${styles.typeOption} ${t === field.type ? styles.typeOptionActive : ''}`}
+                      onMouseDown={e => e.stopPropagation()}
+                      onClick={() => {
+                        onFieldUpdate({ ...field, type: t })
+                        setTypeMenu(null)
+                      }}
+                    >
+                      <span className={styles.typeOptionIcon}>{FIELD_TYPE_ICONS[t]}</span>
+                      {FIELD_TYPE_LABELS[t]}
+                    </button>
+                  )
+                })}
+              </div>,
+              document.body
+            )}
           </tr>
         </thead>
         <tbody>

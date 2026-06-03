@@ -19,6 +19,12 @@
   display: flex;
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+
+  @media (max-width: 600px) {
+    width: 95vw;
+    height: 88vh;
+    flex-direction: column;
+  }
 }
 
 .sidebar {
@@ -27,6 +33,15 @@
   border-right: 1px solid #ebebeb;
   padding: 24px 12px;
   overflow-y: auto;
+
+  @media (max-width: 600px) {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #ebebeb;
+    padding: 14px 12px;
+    overflow-y: visible;
+    overflow-x: auto;
+  }
 
   &__group {
     display: flex;
@@ -48,6 +63,13 @@
     list-style: none;
     padding: 0;
     margin: 0;
+
+    @media (max-width: 600px) {
+      flex-direction: row;
+      gap: 4px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
   }
 
   &__item {
@@ -57,6 +79,7 @@
     cursor: pointer;
     color: #333;
     transition: background 0.1s;
+    white-space: nowrap;
 
     &:hover {
       background: #f0f0f0;

@@ -1,0 +1,1 @@
+export { EditAnketPage } from './ui'

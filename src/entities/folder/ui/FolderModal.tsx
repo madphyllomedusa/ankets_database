@@ -6,6 +6,7 @@ import type { Folder } from '@entities/folder/model/types'
 import { anketApi } from '@entities/anket'
 import type { Anket } from '@entities/anket'
 import { useToast } from '@shared/model/toastContext'
+import { Loader } from '@shared/ui'
 
 interface FolderModalProps {
   folder: Folder
@@ -19,13 +20,15 @@ function FolderModal({ folder, groupName, folders, onClose, onSelectFolder }: Fo
   const navigate = useNavigate()
   const { showToast } = useToast()
   const [ankets, setAnkets] = useState<Anket[]>([])
-  
+  const [loadingAnkets, setLoadingAnkets] = useState(true)
+
   const handleClick = (anketId: string) => {
     navigate(`/anket/${anketId}`)
   }
 
   useEffect(() => {
-    anketApi.getByFolder(folder.id).then(setAnkets)
+    setLoadingAnkets(true)
+    anketApi.getByFolder(folder.id).then(setAnkets).finally(() => setLoadingAnkets(false))
   }, [folder.id])
 
   return (
@@ -67,7 +70,9 @@ function FolderModal({ folder, groupName, folders, onClose, onSelectFolder }: Fo
             </button>
           </div>
 
-          {ankets.length > 0 ? (
+          {loadingAnkets ? (
+            <Loader />
+          ) : ankets.length > 0 ? (
             <ul className={styles.ankets}>
               {ankets.map(anket => (
                 <li key={anket.id} className={styles.anket}>
