@@ -7,6 +7,7 @@ import { AnketPage } from '@pages/anketPage'
 import { FillAnketPage } from '@pages/fillAnketPage'
 import { CreateAnketPage } from '@pages/createAnketPage'
 import { EditAnketPage } from '@pages/editAnketPage'
+import { PublicResourceFormPage } from '@features/csvTransfer'
 import { Header } from '@widgets/header'
 import ProtectedRoute from '@app/ProtectedRoute'
 import { setUser } from '@features/auth/authSlice'
@@ -36,6 +37,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/forms/:resource" element={<PublicResourceFormPage />} />
           <Route element={<ProtectedRoute />}>
             <Route element={<><Header /><Outlet /></>}>
               <Route path="/" element={<HomePage />} />

@@ -36,4 +36,9 @@ export const csvTransferApi = {
       .post<CsvImportResult>(`/${resource}/import`, formData)
       .then(res => res.data)
   },
+
+  createRecord: (resource: string, payload: CsvRecord) =>
+    api
+      .post<CsvRecord>(`/${resource}`, payload)
+      .then(res => res.data),
 }

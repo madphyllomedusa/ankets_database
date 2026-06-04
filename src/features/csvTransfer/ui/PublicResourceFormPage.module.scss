@@ -1,0 +1,126 @@
+@use '../../../shared/styles/variables' as *;
+
+.page {
+  min-height: 100vh;
+  padding: 32px 16px;
+  background: #f6f7f9;
+}
+
+.card {
+  width: min(720px, 100%);
+  margin: 0 auto;
+  padding: 28px;
+  border-top: 8px solid $color-green;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.title {
+  margin: 0;
+  color: $color-text;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.text {
+  margin: 10px 0 0;
+  color: $color-text-muted;
+  font-size: 15px;
+}
+
+.success {
+  margin-top: 20px;
+  padding: 12px 14px;
+  border-radius: 6px;
+  background: #e7f7ee;
+  color: #236c3a;
+  font-size: 14px;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px;
+  border: 1px solid $color-border;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.fieldError {
+  border-color: $color-danger;
+}
+
+.label {
+  color: $color-text;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.required,
+.errorText {
+  color: $color-danger;
+}
+
+.errorText {
+  font-size: 13px;
+}
+
+.control {
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid $color-border;
+  border-radius: 6px;
+  color: $color-text;
+  background: #fff;
+  font-size: 15px;
+}
+
+.checkboxList {
+  display: flex;
+  max-height: 220px;
+  overflow: auto;
+  flex-direction: column;
+  gap: 9px;
+  padding: 10px;
+  border: 1px solid $color-border;
+  border-radius: 6px;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: $color-text;
+  font-size: 14px;
+}
+
+.submit {
+  margin-top: 24px;
+  min-height: 42px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 6px;
+  background: $color-green;
+  color: #fff;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+
+  &:hover {
+    background: $color-green-hover;
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.7;
+  }
+}

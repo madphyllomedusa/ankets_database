@@ -3,6 +3,10 @@ import { csvTransferApi } from '../api/csvTransferApi'
 import type { CsvRecord, CsvRecordValue } from '../api/csvTransferApi'
 import { csvFolders, csvResources } from '../model/resources'
 import type { CsvFolder, CsvResource } from '../model/resources'
+import { resourceFormSchemas } from '../model/formSchemas'
+import type { FormFieldSchema } from '../model/formSchemas'
+import { getFieldLabel } from '../model/fieldLabels'
+import { isRequiredField, validateResourceForm } from '../model/formValidation'
 import { useToast } from '@shared/model/toastContext'
 import folderIcon from '@assets/folder.png'
 import styles from './CsvTransferPanel.module.scss'
@@ -33,6 +37,15 @@ function collectColumns(records: CsvRecord[]) {
   return Array.from(columns)
 }
 
+function normalizeValue(field: FormFieldSchema, value: string | string[]) {
+  if (Array.isArray(value)) return value
+  if (value === '') return undefined
+  if (value.startsWith('DATE_')) return value.replace('DATE_', '').replaceAll('_', '-')
+  if (field.type === 'integer' || field.type === 'number') return Number(value)
+  if (field.type === 'boolean') return value === 'true'
+  return value
+}
+
 function CsvTransferPanel() {
   const { showToast } = useToast()
   const fileInputRef = useRef<HTMLInputElement | null>(null)
@@ -40,12 +53,17 @@ function CsvTransferPanel() {
   const [selectedResource, setSelectedResource] = useState<CsvResource | null>(null)
   const [isExporting, setIsExporting] = useState(false)
   const [isImporting, setIsImporting] = useState(false)
+  const [isSavingRecord, setIsSavingRecord] = useState(false)
   const [isLoadingRecords, setIsLoadingRecords] = useState(false)
+  const [isFormOpen, setIsFormOpen] = useState(false)
+  const [formValues, setFormValues] = useState<Record<string, string | string[]>>({})
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({})
   const [records, setRecords] = useState<CsvRecord[]>([])
   const [totalRecords, setTotalRecords] = useState(0)
 
   const columns = useMemo(() => collectColumns(records), [records])
-  const isBusy = isExporting || isImporting || isLoadingRecords
+  const formSchema = selectedResource ? resourceFormSchemas[selectedResource.value] : undefined
+  const isBusy = isExporting || isImporting || isLoadingRecords || isSavingRecord
   const folderResources = selectedFolder
     ? csvResources.filter(resource => resource.folder === selectedFolder.id)
     : []
@@ -104,6 +122,126 @@ function CsvTransferPanel() {
         fileInputRef.current.value = ''
       }
     }
+  }
+
+  async function handleCopyFormLink() {
+    if (!selectedResource) return
+    const url = `${window.location.origin}/forms/${selectedResource.value}`
+    try {
+      await navigator.clipboard.writeText(url)
+      showToast('Ссылка на форму скопирована')
+    } catch {
+      showToast(url)
+    }
+  }
+
+  async function handleCreateRecord(e: React.FormEvent) {
+    e.preventDefault()
+    if (!selectedResource || !formSchema) return
+
+    const errors = validateResourceForm(formSchema.fields, formValues)
+    setFormErrors(errors)
+    if (Object.keys(errors).length > 0) return
+
+    const payload: CsvRecord = {}
+    formSchema.fields.forEach(field => {
+      const value = normalizeValue(field, formValues[field.name] ?? (field.isArray ? [] : ''))
+      if (value !== undefined && (!Array.isArray(value) || value.length > 0)) {
+        payload[field.name] = value
+      }
+    })
+
+    try {
+      setIsSavingRecord(true)
+      await csvTransferApi.createRecord(selectedResource.value, payload)
+      setFormValues({})
+      setFormErrors({})
+      setIsFormOpen(false)
+      showToast('Запись добавлена')
+      await loadRecords(selectedResource)
+    } catch {
+      showToast('Не удалось добавить запись', 'error')
+    } finally {
+      setIsSavingRecord(false)
+    }
+  }
+
+  function renderFormField(field: FormFieldSchema) {
+    const value = formValues[field.name] ?? (field.isArray ? [] : '')
+
+    if (field.isArray && field.enumValues) {
+      const selected = Array.isArray(value) ? value : []
+      return (
+        <div className={styles.checkboxList}>
+          {field.enumValues.map(option => (
+            <label key={option.value} className={styles.checkboxLabel}>
+              <input
+                type="checkbox"
+                checked={selected.includes(option.value)}
+                onChange={e => {
+                  setFormValues(prev => ({
+                    ...prev,
+                    [field.name]: e.target.checked
+                      ? [...selected, option.value]
+                      : selected.filter(item => item !== option.value),
+                  }))
+                  setFormErrors(prev => ({ ...prev, [field.name]: '' }))
+                }}
+              />
+              {option.label}
+            </label>
+          ))}
+        </div>
+      )
+    }
+
+    if (field.enumValues) {
+      return (
+        <select
+          className={styles.formControl}
+          value={String(value)}
+          onChange={e => {
+            setFormValues(prev => ({ ...prev, [field.name]: e.target.value }))
+            setFormErrors(prev => ({ ...prev, [field.name]: '' }))
+          }}
+        >
+          <option value="">Не выбрано</option>
+          {field.enumValues.map(option => (
+            <option key={option.value} value={option.value}>{option.label}</option>
+          ))}
+        </select>
+      )
+    }
+
+    if (field.type === 'boolean') {
+      return (
+        <select
+          className={styles.formControl}
+          value={String(value)}
+          onChange={e => {
+            setFormValues(prev => ({ ...prev, [field.name]: e.target.value }))
+            setFormErrors(prev => ({ ...prev, [field.name]: '' }))
+          }}
+        >
+          <option value="">Не выбрано</option>
+          <option value="true">Да</option>
+          <option value="false">Нет</option>
+        </select>
+      )
+    }
+
+    return (
+      <input
+        className={styles.formControl}
+        type={field.format === 'date-time' ? 'datetime-local' : field.format === 'date' ? 'date' : field.type === 'integer' || field.type === 'number' ? 'number' : 'text'}
+        step={field.type === 'number' ? '0.01' : undefined}
+        value={String(value)}
+        onChange={e => {
+          setFormValues(prev => ({ ...prev, [field.name]: e.target.value }))
+          setFormErrors(prev => ({ ...prev, [field.name]: '' }))
+        }}
+      />
+    )
   }
 
   if (!selectedFolder) {
@@ -183,6 +321,16 @@ function CsvTransferPanel() {
           <button className={styles.button} disabled={isBusy} onClick={() => loadRecords(selectedResource)}>
             {isLoadingRecords ? 'Загрузка...' : 'Обновить'}
           </button>
+          {formSchema && (
+            <button className={styles.buttonGreen} disabled={isBusy} onClick={() => setIsFormOpen(true)}>
+              Заполнить форму
+            </button>
+          )}
+          {formSchema && (
+            <button className={styles.button} disabled={isBusy} onClick={handleCopyFormLink}>
+              Ссылка формы
+            </button>
+          )}
           <button className={styles.button} disabled={isBusy} onClick={handleExport}>
             {isExporting ? 'Экспорт...' : 'Экспорт CSV'}
           </button>
@@ -208,6 +356,48 @@ function CsvTransferPanel() {
           }
         }}
       />
+
+      {isFormOpen && formSchema && (
+        <div className={styles.formOverlay} onClick={() => {
+          setIsFormOpen(false)
+          setFormErrors({})
+        }}>
+          <form className={styles.recordForm} onSubmit={handleCreateRecord} onClick={e => e.stopPropagation()}>
+            <div className={styles.formHeader}>
+              <h2 className={styles.formTitle}>Новая запись</h2>
+              <button className={styles.closeButton} type="button" onClick={() => {
+                setIsFormOpen(false)
+                setFormErrors({})
+              }}>✕</button>
+            </div>
+
+            <div className={styles.formGrid}>
+              {formSchema.fields.map(field => (
+                <label key={field.name} className={`${styles.formField} ${formErrors[field.name] ? styles.formFieldError : ''}`}>
+                  <span>
+                    {getFieldLabel(field)}
+                    {isRequiredField(field) && <span className={styles.required}> *</span>}
+                  </span>
+                  {renderFormField(field)}
+                  {formErrors[field.name] && <span className={styles.errorText}>{formErrors[field.name]}</span>}
+                </label>
+              ))}
+            </div>
+
+            <div className={styles.formActions}>
+              <button className={styles.button} type="button" onClick={() => {
+                setIsFormOpen(false)
+                setFormErrors({})
+              }}>
+                Отмена
+              </button>
+              <button className={styles.buttonGreen} type="submit" disabled={isSavingRecord}>
+                {isSavingRecord ? 'Сохранение...' : 'Сохранить'}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
 
       <div className={styles.tableScroll}>
         {records.length === 0 ? (
