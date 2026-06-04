@@ -1,9 +1,9 @@
 .page {
-  max-width: 480px;
+  max-width: 1380px;
   margin: 24px auto;
-  padding: 0 16px;
+  padding: 0 28px;
 
-  &__newGroup {
-    margin-top: 12px;
+  @media (max-width: 640px) {
+    padding: 0 16px;
   }
 }

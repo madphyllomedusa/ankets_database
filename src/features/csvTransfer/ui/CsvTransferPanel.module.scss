@@ -1,0 +1,247 @@
+@use '../../../shared/styles/variables' as *;
+
+.root {
+  min-height: calc(100vh - 96px);
+  padding: 12px 0 32px;
+}
+
+.workspaceTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #3b3b3b;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 28px;
+}
+
+.workspaceIcon,
+.workspaceArrow {
+  color: #8b8b8b;
+}
+
+.folderGrid {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) minmax(180px, 1fr);
+  column-gap: 160px;
+  row-gap: 34px;
+
+  @media (max-width: 760px) {
+    grid-template-columns: 1fr;
+    row-gap: 22px;
+  }
+}
+
+.folderItem,
+.tableItem,
+.addItem {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  padding: 4px 10px 4px 0;
+  border: none;
+  background: transparent;
+  color: #202124;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 7px;
+
+  &:hover {
+    background: $color-bg-hover;
+  }
+}
+
+.tableIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 35px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  background: #e8f0fe;
+  color: #4b74d9;
+  font-size: 22px;
+}
+
+.addItem {
+  cursor: default;
+
+  &:hover {
+    background: transparent;
+  }
+}
+
+.addIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 35px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background: #f0f0f0;
+  color: #8b8b8b;
+  font-size: 28px;
+  font-weight: 300;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.backButton {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border: 1px solid $color-border;
+  border-radius: 7px;
+  background: #fff;
+  color: $color-text-muted;
+  cursor: pointer;
+  font-size: 18px;
+
+  &:hover {
+    background: $color-bg-hover;
+    color: $color-text;
+  }
+}
+
+.pageTitle {
+  margin: 0;
+  color: $color-text;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.parentLabel {
+  color: $color-text-muted;
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+
+  @media (max-width: 760px) {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+
+  @media (max-width: 520px) {
+    flex-direction: column;
+  }
+}
+
+.button,
+.buttonGreen {
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, opacity 0.15s;
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.65;
+  }
+}
+
+.button {
+  background: #fff;
+  border: 1px solid $color-border;
+  color: $color-text-muted;
+
+  &:not(:disabled):hover {
+    background: $color-bg-hover;
+    border-color: #ccc;
+    color: $color-text;
+  }
+}
+
+.buttonGreen {
+  background: $color-green;
+  border: 1px solid $color-green;
+  color: #fff;
+
+  &:not(:disabled):hover {
+    background: $color-green-hover;
+    border-color: $color-green-hover;
+  }
+}
+
+.fileInput {
+  display: none;
+}
+
+.tableMeta {
+  color: $color-text-muted;
+  font-size: 13px;
+}
+
+.tableScroll {
+  margin-top: 8px;
+  max-height: 420px;
+  overflow: auto;
+  border: 1px solid $color-border;
+  border-radius: 6px;
+}
+
+.empty {
+  padding: 24px;
+  color: $color-text-muted;
+  font-size: 14px;
+  text-align: center;
+}
+
+.table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  font-size: 13px;
+
+  th,
+  td {
+    max-width: 260px;
+    padding: 8px 10px;
+    border-bottom: 1px solid $color-border;
+    color: $color-text;
+    text-align: left;
+    vertical-align: top;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: $color-bg-hover;
+    color: $color-text-muted;
+    font-weight: 600;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+}
