@@ -1,9 +1,9 @@
 .page {
-  max-width: 1380px;
-  margin: 24px auto;
-  padding: 0 28px;
+  width: 100%;
+  margin: 0;
+  padding: 24px 28px 40px;
 
   @media (max-width: 640px) {
-    padding: 0 16px;
+    padding: 20px 16px 32px;
   }
 }

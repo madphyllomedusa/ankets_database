@@ -4,6 +4,8 @@ import styles from './Input.module.scss'
 interface InputProps {
   value: string
   onChange: (value: string) => void
+  type?: React.HTMLInputTypeAttribute
+  autoComplete?: string
   placeholder?: string
   label?: string
   autoFocus?: boolean
@@ -12,12 +14,24 @@ interface InputProps {
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ value, onChange, placeholder, label, autoFocus, onBlur, onKeyDown }, ref) => {
+  ({
+    value,
+    onChange,
+    type = 'text',
+    autoComplete,
+    placeholder,
+    label,
+    autoFocus,
+    onBlur,
+    onKeyDown,
+  }, ref) => {
     return (
       <div className={styles.wrapper}>
         {label && <label className={styles.label}>{label}</label>}
         <input
           ref={ref}
+          type={type}
+          autoComplete={autoComplete}
           className={styles.input}
           value={value}
           onChange={e => onChange(e.target.value)}

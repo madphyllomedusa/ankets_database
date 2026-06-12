@@ -1,11 +1,12 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { csvTransferApi } from '../api/csvTransferApi'
-import type { CsvRecord } from '../api/csvTransferApi'
+import type { CsvRecord, DictionaryOption } from '../api/csvTransferApi'
 import { csvResources } from '../model/resources'
-import { resourceFormSchemas } from '../model/formSchemas'
 import type { FormFieldSchema } from '../model/formSchemas'
+import { getLongTextRows, isLongTextField } from '../model/fieldControls'
 import { getFieldLabel } from '../model/fieldLabels'
+import { getResourceFields, getResourceFormSchema } from '../model/resourcePresentation'
 import { isRequiredField, validateResourceForm } from '../model/formValidation'
 import styles from './PublicResourceFormPage.module.scss'
 
@@ -21,12 +22,26 @@ function normalizeValue(field: FormFieldSchema, value: string | string[]) {
 function PublicResourceFormPage() {
   const { resource } = useParams<{ resource: string }>()
   const selectedResource = csvResources.find(item => item.value === resource)
-  const formSchema = resource ? resourceFormSchemas[resource] : undefined
+  const [dictionaryOptions, setDictionaryOptions] = useState<DictionaryOption[]>([])
+  const formSchema = useMemo(
+    () => getResourceFormSchema(resource, dictionaryOptions),
+    [dictionaryOptions, resource],
+  )
   const [formValues, setFormValues] = useState<Record<string, string | string[]>>({})
   const [formErrors, setFormErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
-  const fields = useMemo(() => formSchema?.fields ?? [], [formSchema])
+  const fields = useMemo(
+    () => getResourceFields(resource, formSchema),
+    [formSchema, resource],
+  )
+
+  useEffect(() => {
+    if (!resource) return
+    csvTransferApi.getDictionaryOptions(resource)
+      .then(setDictionaryOptions)
+      .catch(() => setDictionaryOptions([]))
+  }, [resource])
 
   if (!selectedResource || !formSchema) {
     return (
@@ -130,6 +145,20 @@ function PublicResourceFormPage() {
       )
     }
 
+    if (isLongTextField(field, value)) {
+      return (
+        <textarea
+          className={`${styles.control} ${styles.textareaControl}`}
+          rows={getLongTextRows(value)}
+          value={String(value)}
+          onChange={e => {
+            setFormValues(prev => ({ ...prev, [field.name]: e.target.value }))
+            setFormErrors(prev => ({ ...prev, [field.name]: '' }))
+          }}
+        />
+      )
+    }
+
     return (
       <input
         className={styles.control}
@@ -158,7 +187,7 @@ function PublicResourceFormPage() {
           {fields.map(field => (
             <label key={field.name} className={`${styles.field} ${formErrors[field.name] ? styles.fieldError : ''}`}>
               <span className={styles.label}>
-                {getFieldLabel(field)}
+                {getFieldLabel(field, resource)}
                 {isRequiredField(field) && <span className={styles.required}> *</span>}
               </span>
               {renderField(field)}

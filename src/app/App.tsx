@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { HomePage } from '@pages/home'
 import { LoginPage } from '@pages/login'
+import { AdminPage } from '@pages/admin'
 import { AnketPage } from '@pages/anketPage'
 import { FillAnketPage } from '@pages/fillAnketPage'
 import { CreateAnketPage } from '@pages/createAnketPage'
@@ -41,6 +42,7 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route element={<><Header /><Outlet /></>}>
               <Route path="/" element={<HomePage />} />
+              <Route path="/admin" element={<AdminPage />} />
               <Route path="/anket/:id" element={<AnketPage />} />
               <Route path="/create-anket/:folderId" element={<CreateAnketPage />} />
               <Route path="/edit-anket/:id" element={<EditAnketPage />} />

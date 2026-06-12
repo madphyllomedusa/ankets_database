@@ -1,16 +1,78 @@
 .header {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  padding: 12px 24px;
-  border-bottom: 1px solid #ebebeb;
+  justify-content: space-between;
+  min-height: 68px;
+  padding: 10px 28px;
+  border-bottom: 1px solid #dbe4e7;
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(35, 65, 77, 0.05);
 
   @media (max-width: 480px) {
     padding: 10px 14px;
   }
 
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    > div {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    strong {
+      color: #243238;
+      font-size: 15px;
+      letter-spacing: 0;
+    }
+
+    div > span {
+      color: #78878e;
+      font-size: 11px;
+    }
+  }
+
+  &__mark {
+    display: inline-flex;
+    width: 38px;
+    height: 38px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: 1px solid #d9e2e5;
+    background: #f6f8f9;
+    color: #40545d;
+    font-size: 19px;
+    font-weight: 700;
+  }
+
   &__right {
     position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__admin {
+    min-height: 34px;
+    padding: 0 12px;
+    border: 1px solid #d9e2e5;
+    border-radius: 6px;
+    background: #fff;
+    color: #40545d;
+    cursor: pointer;
+    font-size: 13px;
+
+    &:hover {
+      background: #edf3f4;
+    }
+
+    @media (max-width: 620px) {
+      display: none;
+    }
   }
 
   &__user {
@@ -20,26 +82,31 @@
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0;
+    padding: 5px 6px 5px 10px;
+    border-radius: 8px;
 
-    &:hover .header__avatar {
-      opacity: 0.85;
+    &:hover {
+      background: #edf3f4;
     }
   }
 
   &__name {
     font-size: 14px;
-    color: #333;
+    color: #41535b;
     white-space: nowrap;
   }
 
   &__avatar {
-    display: block;
+    display: inline-flex;
     width: 36px;
     height: 36px;
+    align-items: center;
+    justify-content: center;
     border-radius: 50%;
-    background: linear-gradient(135deg, #a78bfa, #60a5fa);
+    background: #e8eef1;
+    color: #40545d;
     flex-shrink: 0;
-    transition: opacity 0.15s;
+    font-size: 14px;
+    font-weight: 700;
   }
 }

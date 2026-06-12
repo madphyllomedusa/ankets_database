@@ -18,7 +18,19 @@ function Header() {
 
   return (
     <header className={styles.header}>
+      <div className={styles.header__brand}>
+        <span className={styles.header__mark}>Ц</span>
+        <div>
+          <strong>ЦРТРИС</strong>
+          <span>База анкет</span>
+        </div>
+      </div>
       <div className={styles.header__right}>
+        {user?.role === 'ADMIN' && (
+          <button className={styles.header__admin} type="button" onClick={() => navigate('/admin')}>
+            Пользователи и аудит
+          </button>
+        )}
         <Dropdown
           trigger={(toggle) => (
             <button className={styles.header__user} onClick={toggle}>
@@ -27,10 +39,17 @@ function Header() {
                   {user.name} {user.lastname}
                 </span>
               )}
-              <span className={styles.header__avatar} />
+              <span className={styles.header__avatar}>
+                {user?.name?.[0]?.toUpperCase() ?? 'A'}
+              </span>
             </button>
           )}
-          items={[{ label: 'Выйти из аккаунта', onClick: handleLogout, danger: true }]}
+          items={[
+            ...(user?.role === 'ADMIN'
+              ? [{ label: 'Пользователи и аудит', onClick: () => navigate('/admin') }]
+              : []),
+            { label: 'Выйти из аккаунта', onClick: handleLogout, danger: true },
+          ]}
         />
       </div>
     </header>
