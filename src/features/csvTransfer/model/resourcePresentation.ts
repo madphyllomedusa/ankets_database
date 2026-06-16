@@ -17,6 +17,54 @@ const supplementalSchemas: Record<string, ResourceFormSchema> = {
 }
 
 const resourceFieldNames: Record<string, string[]> = {
+  'candidate-questionnaires': [
+    'fullName',
+    'citizenship',
+    'registrationRegion',
+    'temporaryRegistration',
+    'hasRelativesAbroad',
+    'changedCitizenship',
+    'militaryRegistration',
+    'hasJob',
+    'targetEducation',
+    'travelAvailability',
+    'phone',
+    'email',
+    'telegramUrl',
+    'birthDate',
+    'passedExam',
+    'russianExamScore',
+    'mathematicsExamScore',
+    'thirdExamSubject',
+    'thirdExamScore',
+    'additionalExamSubject',
+    'additionalExamScore',
+    'totalExamScore',
+    'educationInstitution',
+    'educationInstitutionOther',
+    'faculty',
+    'department',
+    'degree',
+    'course',
+    'specialty',
+    'universityAverageScore',
+    'universityChoicePrinciple',
+    'workOrInternship',
+    'foreignLanguages',
+    'educationalInterests',
+    'projects',
+    'additionalEducation',
+    'achievements',
+    'skills',
+    'growthAreas',
+    'source',
+    'referrerFullName',
+    'hobbies',
+    'idealWorkplace',
+    'idealEmployer',
+    'professions',
+    'personalDataConsent',
+  ],
   'curator-three-sixty-reviews': [
     'averageScore',
     'curator',
@@ -80,7 +128,7 @@ export function collectDisplayColumns(records: CsvRecord[], fields: FormFieldSch
 }
 
 function formatDate(value: string) {
-  const normalized = value.replace(/^DATE_/, '').replaceAll('_', '-')
+  const normalized = value.replace(/^DATE_/, '').replace(/_/g, '-')
   const match = normalized.match(
     /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2})(?::\d{2}(?:\.\d+)?)?)?/,
   )

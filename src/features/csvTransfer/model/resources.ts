@@ -44,7 +44,7 @@ export const csvResources: CsvResource[] = [
     value: 'trainee-contacts',
     label: 'Контактные лица стажёров',
     fileName: 'trainee-contacts.csv',
-    folder: 'intern-resumes',
+    folder: 'questionnaires',
   },
   {
     value: 'freelance-applications',

@@ -489,6 +489,13 @@
   font-size: 12px;
 }
 
+.formHint {
+  color: $color-danger;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
 .formControl {
   width: 100%;
   min-height: 36px;
@@ -509,7 +516,8 @@
 
 .photoEditor {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  flex-direction: column;
   gap: 10px;
 
   img {
@@ -520,6 +528,20 @@
     border-radius: 5px;
     object-fit: contain;
     background: #f2f4f5;
+  }
+}
+
+.consentLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: $color-text;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+
+  input {
+    margin-top: 2px;
   }
 }
 

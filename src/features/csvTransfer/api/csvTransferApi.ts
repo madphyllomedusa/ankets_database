@@ -29,6 +29,13 @@ export interface DictionaryOption {
 
 export type DictionaryOptionInput = Omit<DictionaryOption, 'id'>
 
+export interface FileUploadResponse {
+  url: string
+  objectName: string
+  contentType: string
+  size: number
+}
+
 export const csvTransferApi = {
   getRecords: (resource: string, page = 0, size = 50) =>
     api
@@ -48,6 +55,15 @@ export const csvTransferApi = {
 
     return api
       .post<CsvImportResult>(`/${resource}/import`, formData)
+      .then(res => res.data)
+  },
+
+  uploadFile: (file: File) => {
+    const formData = new FormData()
+    formData.append('file', file)
+
+    return api
+      .post<FileUploadResponse>('/files', formData)
       .then(res => res.data)
   },
 

@@ -10,21 +10,73 @@ const REQUIRED_FIELD_NAMES = new Set([
   'name',
 ])
 
+const REQUIRED_RESOURCE_FIELD_NAMES: Record<string, Set<string>> = {
+  'candidate-questionnaires': new Set([
+    'fullName',
+    'citizenship',
+    'registrationRegion',
+    'temporaryRegistration',
+    'hasRelativesAbroad',
+    'changedCitizenship',
+    'militaryRegistration',
+    'hasJob',
+    'targetEducation',
+    'travelAvailability',
+    'phone',
+    'email',
+    'telegramUrl',
+    'birthDate',
+    'passedExam',
+    'russianExamScore',
+    'mathematicsExamScore',
+    'thirdExamSubject',
+    'thirdExamScore',
+    'additionalExamSubject',
+    'additionalExamScore',
+    'totalExamScore',
+    'educationInstitution',
+    'educationInstitutionOther',
+    'faculty',
+    'department',
+    'degree',
+    'course',
+    'specialty',
+    'universityAverageScore',
+    'universityChoicePrinciple',
+    'workOrInternship',
+    'foreignLanguages',
+    'educationalInterests',
+    'projects',
+    'additionalEducation',
+    'achievements',
+    'skills',
+    'growthAreas',
+    'source',
+    'referrerFullName',
+    'hobbies',
+    'idealWorkplace',
+    'idealEmployer',
+    'professions',
+    'personalDataConsent',
+  ]),
+}
+
 function isEmptyValue(value: FormValue | undefined) {
   return value === undefined || value === '' || (Array.isArray(value) && value.length === 0)
 }
 
-export function isRequiredField(field: FormFieldSchema) {
-  return REQUIRED_FIELD_NAMES.has(field.name)
+export function isRequiredField(field: FormFieldSchema, resource?: string) {
+  return Boolean(resource && REQUIRED_RESOURCE_FIELD_NAMES[resource]?.has(field.name))
+    || REQUIRED_FIELD_NAMES.has(field.name)
 }
 
-export function validateResourceForm(fields: FormFieldSchema[], values: FormValues) {
+export function validateResourceForm(fields: FormFieldSchema[], values: FormValues, resource?: string) {
   const errors: FormErrors = {}
 
   fields.forEach(field => {
     const value = values[field.name]
 
-    if (isRequiredField(field) && isEmptyValue(value)) {
+    if (isRequiredField(field, resource) && isEmptyValue(value)) {
       errors[field.name] = 'Обязательное поле'
       return
     }

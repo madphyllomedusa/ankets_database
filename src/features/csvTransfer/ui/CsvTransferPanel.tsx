@@ -4,6 +4,7 @@ import type { CsvRecord, CsvRecordValue, DictionaryOption } from '../api/csvTran
 import { csvFolders, csvResources } from '../model/resources'
 import type { CsvFolder, CsvResource } from '../model/resources'
 import type { FormFieldSchema } from '../model/formSchemas'
+import { getConsentLabel, getFieldHint, shouldShowField } from '../model/formBehavior'
 import { getLongTextRows, isLongTextField } from '../model/fieldControls'
 import { getFieldLabel } from '../model/fieldLabels'
 import {
@@ -30,7 +31,12 @@ function downloadBlob(blob: Blob, fileName: string) {
 
 function getImageSource(value: CsvRecordValue) {
   if (typeof value !== 'string') return null
-  if (value.startsWith('data:image/') || value.startsWith('https://') || value.startsWith('http://')) {
+  if (
+    value.startsWith('/files/')
+    || value.startsWith('data:image/')
+    || value.startsWith('https://')
+    || value.startsWith('http://')
+  ) {
     return value
   }
   return value.match(/\((https?:\/\/[^)]+)\)\s*$/)?.[1] ?? null
@@ -39,7 +45,7 @@ function getImageSource(value: CsvRecordValue) {
 function normalizeValue(field: FormFieldSchema, value: string | string[]) {
   if (Array.isArray(value)) return value
   if (value === '') return undefined
-  if (value.startsWith('DATE_')) return value.replace('DATE_', '').replaceAll('_', '-')
+  if (value.startsWith('DATE_')) return value.replace('DATE_', '').replace(/_/g, '-')
   if (field.type === 'integer' || field.type === 'number') return Number(value)
   if (field.type === 'boolean') return value === 'true'
   return value
@@ -95,6 +101,10 @@ function CsvTransferPanel() {
   const fields = useMemo(
     () => getResourceFields(selectedResource?.value, formSchema),
     [formSchema, selectedResource?.value],
+  )
+  const visibleFormFields = useMemo(
+    () => fields.filter(field => shouldShowField(selectedResource?.value, field, formValues, fields)),
+    [fields, formValues, selectedResource?.value],
   )
   const fieldsByName = useMemo(
     () => new Map(fields.map(field => [field.name, field])),
@@ -270,12 +280,12 @@ function CsvTransferPanel() {
     e.preventDefault()
     if (!selectedResource || !formSchema) return
 
-    const errors = validateResourceForm(fields, formValues)
+    const errors = validateResourceForm(visibleFormFields, formValues, selectedResource.value)
     setFormErrors(errors)
     if (Object.keys(errors).length > 0) return
 
     const payload: CsvRecord = {}
-    fields.forEach(field => {
+    visibleFormFields.forEach(field => {
       const value = normalizeValue(field, formValues[field.name] ?? (field.isArray ? [] : ''))
       if (editingRecord) {
         if (field.name === 'photo' && value === undefined) return
@@ -342,19 +352,56 @@ function CsvTransferPanel() {
 
   function renderFormField(field: FormFieldSchema) {
     const value = formValues[field.name] ?? (field.isArray ? [] : '')
+    const consentLabel = getConsentLabel(selectedResource?.value, field.name)
+
+    if (consentLabel) {
+      return (
+        <label className={styles.consentLabel}>
+          <input
+            type="checkbox"
+            checked={value === 'true'}
+            onChange={e => {
+              setFormValues(prev => ({ ...prev, [field.name]: e.target.checked ? 'true' : '' }))
+              setFormErrors(prev => ({ ...prev, [field.name]: '' }))
+            }}
+          />
+          <span>{consentLabel}</span>
+        </label>
+      )
+    }
 
     if (field.name === 'photo') {
       const currentPhoto = editingRecord ? getImageSource(editingRecord.photo) : null
+      const selectedPhoto = typeof value === 'string' ? getImageSource(value) : null
       return (
         <div className={styles.photoEditor}>
-          {currentPhoto && (
-            <img src={currentPhoto} alt="" />
+          {(selectedPhoto ?? currentPhoto) && (
+            <img src={(selectedPhoto ?? currentPhoto) ?? undefined} alt="" />
+          )}
+          <input
+            className={styles.formControl}
+            type="file"
+            accept="image/*"
+            onChange={async e => {
+              const file = e.target.files?.[0]
+              if (!file) return
+              try {
+                const uploaded = await csvTransferApi.uploadFile(file)
+                setFormValues(prev => ({ ...prev, [field.name]: uploaded.url }))
+                setFormErrors(prev => ({ ...prev, [field.name]: '' }))
+              } catch {
+                setFormErrors(prev => ({ ...prev, [field.name]: 'Не удалось загрузить файл' }))
+              }
+            }}
+          />
+          {typeof value === 'string' && value.startsWith('/files/') && (
+            <span className={styles.formHint}>Файл загружен и будет сохранен ссылкой.</span>
           )}
           <input
             className={styles.formControl}
             type="url"
             placeholder={currentPhoto ? 'Вставьте ссылку, чтобы заменить фото' : 'Ссылка на фото'}
-            value={String(value)}
+            value={typeof value === 'string' && (value.startsWith('/files/') || value.startsWith('data:image/')) ? '' : String(value)}
             onChange={e => {
               setFormValues(prev => ({ ...prev, [field.name]: e.target.value }))
               setFormErrors(prev => ({ ...prev, [field.name]: '' }))
@@ -619,7 +666,7 @@ function CsvTransferPanel() {
             </div>
 
             <div className={styles.formGrid}>
-              {fields.map(field => (
+              {visibleFormFields.map(field => (
                 <label
                   key={field.name}
                   className={[
@@ -630,9 +677,12 @@ function CsvTransferPanel() {
                 >
                   <span>
                     {getFieldLabel(field, selectedResource.value)}
-                    {isRequiredField(field) && <span className={styles.required}> *</span>}
+                    {isRequiredField(field, selectedResource.value) && <span className={styles.required}> *</span>}
                   </span>
                   {renderFormField(field)}
+                  {getFieldHint(selectedResource.value, field.name) && (
+                    <span className={styles.formHint}>{getFieldHint(selectedResource.value, field.name)}</span>
+                  )}
                   {formErrors[field.name] && <span className={styles.errorText}>{formErrors[field.name]}</span>}
                 </label>
               ))}
