@@ -264,7 +264,7 @@ const resourceFieldLabels: Record<string, Record<string, string>> = {
     fullName: 'ФИО',
     citizenship: 'Гражданство',
     registrationRegion: 'Регион регистрации',
-    temporaryRegistration: 'Временная регистрация',
+    temporaryRegistration: 'Есть ли временная регистрация',
     hasRelativesAbroad: 'Есть родственники за границей',
     changedCitizenship: 'Менялось гражданство',
     militaryRegistration: 'Воинский учёт',

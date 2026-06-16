@@ -17,9 +17,15 @@ function isAffirmativeValue(value: string | string[] | undefined, label: string)
     || /^(да|сдавал|есть)$/i.test(label.trim())
 }
 
+function isNegativeValue(value: string | string[] | undefined, label: string) {
+  if (Array.isArray(value)) return false
+  return /^(no|NO|Нет|НЕТ)$/i.test(value ?? '')
+    || /^(нет|не сдавал|не сдавал \(-ла\))$/i.test(label.trim())
+}
+
 function isOtherValue(value: string | string[] | undefined, label: string) {
   if (Array.isArray(value)) return false
-  return /other/i.test(value ?? '') || /другое|иной|иное/i.test(label)
+  return /other|INSTITUTION_25/i.test(value ?? '') || /другое|нет в списке|иной|иное/i.test(label)
 }
 
 function isSaintPetersburgRegion(label: string) {
@@ -46,17 +52,27 @@ export function shouldShowField(
     field.name === 'russianExamScore'
     || field.name === 'mathematicsExamScore'
     || field.name === 'thirdExamSubject'
+    || field.name === 'additionalExamSubject'
+    || field.name === 'totalExamScore'
   ) {
     const passedExam = getSelectedLabel(getField(fields, 'passedExam'), values.passedExam)
     return isAffirmativeValue(values.passedExam, passedExam)
   }
 
   if (field.name === 'thirdExamScore') {
-    return Boolean(values.thirdExamSubject)
+    const passedExam = getSelectedLabel(getField(fields, 'passedExam'), values.passedExam)
+    return isAffirmativeValue(values.passedExam, passedExam) && Boolean(values.thirdExamSubject)
   }
 
   if (field.name === 'additionalExamScore') {
-    return Boolean(values.additionalExamSubject)
+    const passedExam = getSelectedLabel(getField(fields, 'passedExam'), values.passedExam)
+    const additionalExam = getSelectedLabel(
+      getField(fields, 'additionalExamSubject'),
+      values.additionalExamSubject,
+    )
+    return isAffirmativeValue(values.passedExam, passedExam)
+      && Boolean(values.additionalExamSubject)
+      && !isNegativeValue(values.additionalExamSubject, additionalExam)
   }
 
   if (field.name === 'educationInstitutionOther') {
@@ -69,7 +85,7 @@ export function shouldShowField(
 
   if (field.name === 'referrerFullName') {
     const source = getSelectedLabel(getField(fields, 'source'), values.source)
-    return /рекоменд/i.test(source)
+    return values.source === 'CENTER_EMPLOYEE' || /сотрудник/i.test(source)
   }
 
   return true
@@ -79,10 +95,10 @@ export function getFieldHint(resource: string | undefined, fieldName: string) {
   if (resource !== 'candidate-questionnaires') return undefined
 
   const hints: Record<string, string> = {
-    temporaryRegistration: 'Если не СПб и Ленинградская область, укажите временную регистрацию.',
+    temporaryRegistration: 'Появляется, если регион регистрации не Санкт-Петербург и не Ленинградская область.',
     russianExamScore: 'Появляется, если кандидат сдавал ЕГЭ.',
     educationInstitutionOther: 'Появляется, если выбрано другое учебное заведение.',
-    referrerFullName: 'Появляется, если источник - рекомендатель сотрудник.',
+    referrerFullName: 'Появляется, если источник - сотрудник.',
     personalDataConsent: 'Нажимая на кнопку отправки, кандидат соглашается с политикой обработки персональных данных.',
   }
 
