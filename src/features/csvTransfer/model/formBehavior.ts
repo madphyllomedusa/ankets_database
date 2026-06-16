@@ -95,10 +95,6 @@ export function getFieldHint(resource: string | undefined, fieldName: string) {
   if (resource !== 'candidate-questionnaires') return undefined
 
   const hints: Record<string, string> = {
-    temporaryRegistration: 'Появляется, если регион регистрации не Санкт-Петербург и не Ленинградская область.',
-    russianExamScore: 'Появляется, если кандидат сдавал ЕГЭ.',
-    educationInstitutionOther: 'Появляется, если выбрано другое учебное заведение.',
-    referrerFullName: 'Появляется, если источник - сотрудник.',
     personalDataConsent: 'Нажимая на кнопку отправки, кандидат соглашается с политикой обработки персональных данных.',
   }
 
